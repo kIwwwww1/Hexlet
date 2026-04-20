@@ -4,7 +4,7 @@ class Config(BaseSettings):
     db_url: str = 'sqlite:///database.db'
 
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file='src/backend/.env',
         env_file_encoding='utf-8',
     )
 
