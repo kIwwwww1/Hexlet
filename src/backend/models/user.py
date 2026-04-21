@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, func, DateTime
+from sqlalchemy import func, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 from .base import Base
 from datetime import datetime
@@ -11,18 +11,44 @@ class Users(Base):
     user_name: Mapped[str] = mapped_column(
         unique=True,
     )
-    user_level: Mapped[int] = mapped_column(
+    level: Mapped[int] = mapped_column(
         nullable=False,
-        default=0
+        default=1,
+        server_default='1'
     )
-    creation_data: Mapped[datetime] = mapped_column(
+
+    xp: Mapped[int] = mapped_column(
+        nullable=False,
+        default=0,
+        server_default='0'
+    )
+
+    energy: Mapped[int] = mapped_column(
+        nullable=False,
+        default=10,
+        server_default='10'
+    )
+
+    floor: Mapped[int] = mapped_column(
+        nullable=False,
+        default=0,
+        server_default='0',
+    )
+
+    floor_level: Mapped[int] = mapped_column(
+        nullable=False,
+        default=0,
+        server_default='0',
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now()
     )
 
     @property
-    def get_creation_data(self):
+    def get_created_at(self):
         '''Вернуть красивую дату регистрации'''
-        if self.creation_data is None:
+        if self.created_at is None:
             return None
-        return self.creation_data.strftime('%d.%m.%Y %H:%M')
+        return self.created_at.strftime('%d.%m.%Y %H:%M')
