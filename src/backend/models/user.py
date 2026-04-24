@@ -7,10 +7,11 @@ class Users(Base):
     __tablename__ = 'users'
     
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    
     unique_user_id: Mapped[str] = mapped_column(unique=True)
+    user_name: Mapped[str] = mapped_column(nullable=False, unique=True)
 
-    user_name: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(unique=True)
 
     level: Mapped[int] = mapped_column(
         nullable=False,

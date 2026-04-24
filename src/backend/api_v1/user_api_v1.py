@@ -14,4 +14,3 @@ UserDep = Annotated[UserService, Depends(get_user_service)]
 @user_router.get('/')
 async def test_endpoint(user_service: UserDep) -> str:
     return await user_service.get_user(1)
-
