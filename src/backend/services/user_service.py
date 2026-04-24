@@ -1,9 +1,10 @@
-class User():
-    def __init__(self) -> None:
-        ...
+from sqlalchemy.ext.asyncio import AsyncSession
 
-    @staticmethod
-    def get_user(id: int): # -> Объект пользователя
+class UserService():
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    def get_user(self, id: int): # -> Объект пользователя при работе с бд
         return 'Тестовый пользователь #1'
 
         
