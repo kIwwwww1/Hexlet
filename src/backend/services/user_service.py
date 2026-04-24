@@ -1,10 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.backend.services.user_repository import UserRepository
 
 class UserService():
     def __init__(self, session: AsyncSession) -> None:
-        self.session = session
+        self.db = UserRepository(session)
 
-    def get_user(self, id: int): # -> Объект пользователя при работе с бд
-        return 'Тестовый пользователь #1'
+    async def get_user(self, id: int) -> str: # -> Объект пользователя при работе с бд
+        # Тестовый пример без обращения к базе данных
+        return await self.db.get_by_id(1)
 
         

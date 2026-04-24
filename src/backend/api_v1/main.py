@@ -24,6 +24,5 @@ async def middleware(request: Request, call_next: Callable) -> Response:
     log.debug(f'Query execution time - {end_time:.4f}')
     return response
 
-
 # Endpoints
 app.include_router(user_router, prefix='/api/v1/user', tags=['User'])

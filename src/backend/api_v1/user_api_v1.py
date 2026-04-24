@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import Depends
 from fastapi import APIRouter
 from src.backend.dependency import SessionDep
@@ -8,7 +9,9 @@ user_router = APIRouter(tags=['User'])
 def get_user_service(session: SessionDep) -> UserService:
     return UserService(session)
 
+UserDep = Annotated[UserService, Depends(get_user_service)]
 
 @user_router.get('/')
-async def test_endpoint(db:UserService = Depends(get_user_service)) -> str:
-    return 'Hello user!'
+async def test_endpoint(user_service: UserDep) -> str:
+    return await user_service.get_user(1)
+
