@@ -10,9 +10,7 @@ class Users(Base):
     
     unique_user_id: Mapped[str] = mapped_column(unique=True)
 
-    user_name: Mapped[str] = mapped_column(
-        unique=True,
-    )
+    user_name: Mapped[str] = mapped_column(unique=True)
 
     level: Mapped[int] = mapped_column(
         nullable=False,
