@@ -6,6 +6,8 @@ services:
     container_name: fastapi_app
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
     env_file:
       - src/backend/.env
     depends_on:
