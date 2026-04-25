@@ -25,5 +25,6 @@ engine = create_async_engine(settings.db_url)
 async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    '''Create DB async session with context manager'''
     async with async_session_factory() as session:
         yield session
