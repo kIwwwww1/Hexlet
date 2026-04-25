@@ -8,8 +8,13 @@ class UserRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def create_user(self, data: UserData) -> str:
-        Users()
+    async def create_new_user(self, user_data: UserData) -> str:
+        new_user = Users(
+            user_name=user_data.user_name
+
+
+        )
+        self.session.add(Users)
         await self.session.commit()
         return '...'
     

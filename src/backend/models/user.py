@@ -4,7 +4,7 @@ from .base import Base
 class Users(Base):
     __tablename__ = 'users'
 
-    unique_user_id: Mapped[str] = mapped_column(unique=True)
+    unique_id: Mapped[str] = mapped_column(unique=True)
     user_name: Mapped[str] = mapped_column(nullable=False, unique=True)
 
     password: Mapped[str] = mapped_column(nullable=False)
