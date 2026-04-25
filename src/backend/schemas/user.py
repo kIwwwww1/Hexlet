@@ -12,6 +12,7 @@ def generate_unique_id(
         use_digits: int = 2,
     ) -> str:
     '''Creating a unique user ID'''
+
     random_lower = sample(_LOWERCASE, use_lower)
     random_upper = sample(_UPPERCASE, use_upper)
     random_digit = sample(_DIGITS, use_digits)
@@ -24,7 +25,7 @@ class UserData(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=25)
 
-class UserResponse(UserData):
+class UserNewData(UserData):
     unique_id: str = Field(default_factory=generate_unique_id)
     
 
