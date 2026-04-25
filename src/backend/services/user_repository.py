@@ -26,22 +26,21 @@ class UserRepository:
         
         except SQLAlchemyError as ex:
             await self.session.rollback()
-            log.exception('Ошибка при создании пользователя')
+            log.exception('Error creating user')
             raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail='Данные невалидны или пользователь уже существует'
+                    detail='The data is invalid or the user already exists'
                 )
         
         except Exception as ex:
             await self.session.rollback()
-            log.exception('Внутренняя ошибка сервера')
+            log.exception('Internal server error')
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Внутренняя ошибка сервера"
+                detail="Internal server error"
             )
     
         
     async def get_by_id(self, user_id: int) -> str:# Объект пользователя
         await asyncio.sleep(0.5)
-        return 'Получили пользователя kIww1 с id: #HwZ91s'
-    
+        return 'Get test user -> kIww1 with id: #HwZ91s'
