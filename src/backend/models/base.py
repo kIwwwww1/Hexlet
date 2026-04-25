@@ -2,11 +2,23 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import (create_async_engine, 
                                     async_sessionmaker, 
                                     AsyncSession)
-from sqlalchemy.orm import DeclarativeBase
+from datetime import datetime
+from sqlalchemy import DateTime, func
+from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass, Mapped, mapped_column
 from src.backend.config import settings
 
-class Base(DeclarativeBase):
-    pass
+class Base(MappedAsDataclass, DeclarativeBase):
+    __dataclass_args__ = {'kw_only': True}
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True, index=True, init=False
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        init=False
+    )
 
 engine = create_async_engine(settings.db_url)
 

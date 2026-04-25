@@ -9,9 +9,7 @@ class UserRepository:
         self.session = session
 
     async def create_user(self, data: UserData) -> str:
-        Users(
-            
-        )
+        Users()
         await self.session.commit()
         return '...'
     
