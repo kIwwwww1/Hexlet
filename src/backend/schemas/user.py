@@ -26,7 +26,7 @@ class UserData(BaseModel):
     password: str = Field(min_length=8, max_length=25)
 
 
-class UserNewData(UserData):
+class UserInDB(UserData):
     unique_id: str = Field(default_factory=generate_unique_id)
     
 

@@ -11,7 +11,9 @@ class Base(MappedAsDataclass, DeclarativeBase):
     __dataclass_args__ = {'kw_only': True}
 
     id: Mapped[int] = mapped_column(
-        primary_key=True, index=True, init=False
+        primary_key=True,
+        index=True, 
+        init=False,
     )
 
     created_at: Mapped[datetime] = mapped_column(

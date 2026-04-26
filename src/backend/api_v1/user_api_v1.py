@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from src.backend.dependency import SessionDep
 from src.backend.services.user_service import UserService
 from src.backend.logger_config import log
-from src.backend.schemas.user import UserNewData
+from src.backend.schemas.user import UserInDB, UserData
 
 # the path built relative to -> /api/v1/user/...
 user_router = APIRouter(
@@ -21,15 +21,17 @@ UserDep = Annotated[UserService, Depends(get_user_service)]
 async def test_endpoint(user_service: UserDep) -> str:
     '''This is a test endpoint (No prod.)'''
     
-    log.exception('!!!Тестовая ошибка!!!')
-    return await user_service.get_user(1)
+    # log.exception('!!!Тестовая ошибка!!!')
+    # return await user_service.get_user(1)
+    return 'test'
 
 
 @user_router.post('/create')
 async def create_user(
-        data: UserNewData,
+        data: UserData,
         user_service: UserDep
     ):
     '''Endpoint to create user in system'''
 
-    return await user_service.create_user(data)
+    user_data = UserInDB(**data.model_dump())
+    return await user_service.create_user(user_data)
