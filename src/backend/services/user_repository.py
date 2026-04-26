@@ -13,6 +13,7 @@ class UserRepository:
 
     async def create_new_user(self, user_data: UserNewData) -> str:
         '''Creating a new user in db'''
+        
         try:
             new_user = Users(
                 user_name=user_data.user_name,
@@ -26,6 +27,7 @@ class UserRepository:
         
         except SQLAlchemyError as ex:
             await self.session.rollback()
+
             log.exception('Error creating user')
             raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -34,6 +36,7 @@ class UserRepository:
         
         except Exception as ex:
             await self.session.rollback()
+
             log.exception('Internal server error')
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
