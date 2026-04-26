@@ -20,10 +20,8 @@ UserDep = Annotated[UserService, Depends(get_user_service)]
 @user_router.get('/')
 async def test_endpoint(user_service: UserDep) -> str:
     '''This is a test endpoint (No prod.)'''
-    
-    # log.exception('!!!Тестовая ошибка!!!')
-    # return await user_service.get_user(1)
-    return 'test'
+
+    return 'hello world'
 
 
 @user_router.post('/create')
