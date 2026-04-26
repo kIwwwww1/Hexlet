@@ -33,5 +33,6 @@ async def create_user(
     ):
     '''Endpoint to create user in system'''
 
+    # Create unique user id and build final data for add
     user_data = UserInDB(**data.model_dump())
     return await user_service.create_user(user_data)
