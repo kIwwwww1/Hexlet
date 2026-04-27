@@ -7,17 +7,13 @@ class Tests(Base):
     __tablename__ = 'Test'
 
     for_lesson_id: Mapped[int] = mapped_column(
-        ForeignKey('lesson.lesson_id'),
+        ForeignKey('lesson.id'),
         index=True,
     )
 
-    question_id: Mapped[int] = mapped_column(
-        primary_key=True
-    )
+    options: Mapped[list[str]] = mapped_column(JSONB)
 
-    options: Mapped[list[str | int]] = mapped_column(JSONB)
-
-    curr_answer: Mapped[str | int] = mapped_column(
+    curr_answer: Mapped[str] = mapped_column(
         nullable=False
     )
 

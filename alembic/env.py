@@ -21,6 +21,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from src.backend.models.user import Users
+from src.backend.models.lesson import Lessons
+from src.backend.models.test import Tests
 from src.backend.models.base import Base
 from src.backend.config import settings
 target_metadata = Base.metadata
