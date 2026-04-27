@@ -6,20 +6,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.backend.logger_config import log
 from src.backend.models.user import Users
 from src.backend.schemas.user import UserInDB
-
-
-def hash_password(password: str) -> hash | None: ...
+from src.backend.services.secret_repository import SecretRepository
 
 
 class UserRepository:
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(self, session: AsyncSession, secret: SecretRepository) -> None:
         self.session = session
+        self.secret = secret
 
     async def create_new_user(self, user_data: UserInDB) -> Users:
         """Creating a new user in db"""
 
         try:
-            new_user = Users(**user_data.model_dump())
+            hashed_password = self.secret.hash_password(user_data.password)
+
+            user_dict = user_data.model_dump()
+            user_dict['password'] = hashed_password
+
+            new_user = Users(**user_dict)
             self.session.add(new_user)
 
             await self.session.commit()

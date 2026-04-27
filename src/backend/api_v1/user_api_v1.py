@@ -2,8 +2,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from src.backend.dependency import SessionDep
+from src.backend.dependency import SecretDep, SessionDep
 from src.backend.schemas.user import UserCreate, UserInDB
+
+# from src.backend.services.secret_repository import SecretRepository
 from src.backend.services.user_service import UserService
 
 # the path built relative to -> /api/v1/user/...
@@ -13,8 +15,8 @@ user_router = APIRouter(
 )
 
 
-def get_user_service(session: SessionDep) -> UserService:
-    return UserService(session)
+def get_user_service(session: SessionDep, secret: SecretDep) -> UserService:
+    return UserService(session, secret)
 
 
 UserDep = Annotated[UserService, Depends(get_user_service)]
