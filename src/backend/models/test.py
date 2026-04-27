@@ -1,7 +1,9 @@
+from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey
+
 from .base import Base
+
 
 class Tests(Base):
     __tablename__ = 'Test'

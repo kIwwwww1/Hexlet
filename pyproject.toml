@@ -17,3 +17,40 @@ dependencies = [
     "sqlalchemy[mypy]>=2.0.49",
     "uvicorn>=0.44.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.12",
+]
+
+
+[tool.ruff]
+fix = true
+line-length = 88
+exclude = [
+    ".git", 
+    "__pycache__", 
+    ".venv", 
+    "build", 
+    "dist"
+]
+
+[tool.ruff.lint]
+# Включенные правила
+select = ["E", "F", "I", "UP", "N", "B", "C4", "RUF"]
+
+# Правила, которые нужно игнорировать
+ignore = ["E501", "B008", "B904", "RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/*.py" = ["E402"] # Игнорировать порядок импортов в папке alembic
+"src/backend/models/*.py" = ["F821"] # Что бы не ругался на импорт классов таблиц
+
+# Настройка isort
+[tool.ruff.lint.isort]
+known-first-party = ["src" ,"hexlet"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"

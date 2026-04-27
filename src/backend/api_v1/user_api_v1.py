@@ -1,10 +1,10 @@
 from typing import Annotated
-from fastapi import Depends
-from fastapi import APIRouter
+
+from fastapi import APIRouter, Depends
+
 from src.backend.dependency import SessionDep
+from src.backend.schemas.user import UserData, UserInDB
 from src.backend.services.user_service import UserService
-from src.backend.logger_config import log
-from src.backend.schemas.user import UserInDB, UserData
 
 # the path built relative to -> /api/v1/user/...
 user_router = APIRouter(

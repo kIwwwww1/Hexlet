@@ -1,10 +1,14 @@
 import time
-from typing import Callable
+from collections.abc import Callable
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request, Response
+
+from src.backend.logger_config import log
+
 # 
 from .user_api_v1 import user_router
-from src.backend.logger_config import log
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
