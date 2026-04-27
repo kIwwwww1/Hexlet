@@ -6,7 +6,7 @@ from .base import Base
 
 
 class Tests(Base):
-    __tablename__ = 'Test'
+    __tablename__ = 'test'
 
     for_lesson_id: Mapped[int] = mapped_column(
         ForeignKey('lesson.id'),
@@ -15,10 +15,6 @@ class Tests(Base):
 
     options: Mapped[list[str]] = mapped_column(JSONB)
 
-    curr_answer: Mapped[str] = mapped_column(
-        nullable=False
-    )
+    curr_answer: Mapped[str] = mapped_column(nullable=False)
 
-    lesson: Mapped['Lessons'] = relationship(
-        back_populates='questions'
-    )
+    lesson: Mapped['Lessons'] = relationship(back_populates='questions')

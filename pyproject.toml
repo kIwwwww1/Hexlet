@@ -45,6 +45,7 @@ ignore = ["E501", "B008", "B904", "RUF012"]
 [tool.ruff.lint.per-file-ignores]
 "alembic/*.py" = ["E402"] # Игнорировать порядок импортов в папке alembic
 "src/backend/models/*.py" = ["F821"] # Что бы не ругался на импорт классов таблиц
+"**/env.py" = ["F401"]
 
 # Настройка isort
 [tool.ruff.lint.isort]
