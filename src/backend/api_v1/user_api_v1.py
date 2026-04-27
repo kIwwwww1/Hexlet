@@ -4,8 +4,6 @@ from fastapi import APIRouter, Depends
 
 from src.backend.dependency import SecretDep, SessionDep
 from src.backend.schemas.user import UserCreate, UserInDB
-
-# from src.backend.services.secret_repository import SecretRepository
 from src.backend.services.user_service import UserService
 
 # the path built relative to -> /api/v1/user/...

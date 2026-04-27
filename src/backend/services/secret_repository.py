@@ -1,13 +1,17 @@
-from passlib.context import CryptContext
+import bcrypt
 
 
 class SecretRepository:
-    _pwd_context = CryptContext(schemes=['bcrypt'])
-
     @classmethod
     def hash_password(cls, user_password: str) -> str:
-        return cls._pwd_context.hash(user_password)
+        pwd_bytes = user_password.encode('utf-8')
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(pwd_bytes, salt)
+
+        return hashed.decode('utf-8')
 
     @classmethod
     def verify_password(cls, input_password: str, hashed_password: str) -> bool:
-        return cls._pwd_context.verify(input_password, hashed_password)
+        return bcrypt.checkpw(
+            input_password.encode('utf-8'), hashed_password.encode('utf-8')
+        )
