@@ -1,7 +1,7 @@
 from random import sample
 from string import ascii_lowercase, ascii_uppercase, digits
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 _LOWERCASE = ascii_lowercase
 _UPPERCASE = ascii_uppercase
@@ -37,3 +37,5 @@ class UserData(BaseModel):
     user_name: str
     email: EmailStr
     unique_id: str
+
+    model_config = ConfigDict(from_attributes=True)
