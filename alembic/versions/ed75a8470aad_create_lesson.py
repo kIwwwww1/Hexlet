@@ -5,17 +5,18 @@ Revises: 8c6e6f9c25a4
 Create Date: 2026-04-27 11:38:08.084424
 
 """
-from typing import Sequence, Union
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
+
 # revision identifiers, used by Alembic.
 revision: str = 'ed75a8470aad'
-down_revision: Union[str, Sequence[str], None] = '8c6e6f9c25a4'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = '8c6e6f9c25a4'
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:

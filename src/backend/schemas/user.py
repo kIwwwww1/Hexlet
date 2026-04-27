@@ -20,14 +20,20 @@ def generate_unique_id(
     random_digit = sample(_DIGITS, use_digits)
     combined = random_lower + random_upper + random_digit
 
-    return "".join(sample(combined, len(combined)))
+    return ''.join(sample(combined, len(combined)))
 
 
-class UserData(BaseModel):
+class UserCreate(BaseModel):
     user_name: str = Field(min_length=3, max_length=15)
     email: EmailStr
     password: str = Field(min_length=8, max_length=25)
 
 
-class UserInDB(UserData):
+class UserInDB(UserCreate):
     unique_id: str = Field(default_factory=generate_unique_id)
+
+
+class UserData(BaseModel):
+    user_name: str
+    email: EmailStr
+    unique_id: str
