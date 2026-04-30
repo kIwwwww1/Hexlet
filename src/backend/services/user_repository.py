@@ -10,6 +10,8 @@ from src.backend.services.secret_repository import SecretRepository
 
 
 class UserRepository:
+    """Designed to work with a database"""
+
     def __init__(self, session: AsyncSession, secret: SecretRepository) -> None:
         self.session = session
         self.secret = secret
@@ -48,7 +50,9 @@ class UserRepository:
                 detail='Internal server error',
             )
 
-    async def get_by_id(self, user_id: int) -> Users | None:  # Объект пользователя
+    async def get_by_id(self, user_id: int) -> Users | None:
         stmt = select(Users).where(Users.id == user_id)
         result = await self.session.execute(stmt)
+
+        log.info('Получение пользователя')
         return result.scalar_one_or_none()

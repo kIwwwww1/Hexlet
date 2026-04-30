@@ -7,6 +7,8 @@ from src.backend.services.user_repository import UserRepository
 
 
 class UserService:
+    """Designed to work with the UserRepository class"""
+
     def __init__(self, session: AsyncSession, secret: SecretRepository) -> None:
         self.db = UserRepository(session, secret)
 
