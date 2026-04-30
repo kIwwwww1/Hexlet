@@ -9,7 +9,7 @@ from src.backend.services.user_service import UserService
 # the path built relative to -> /api/v1/user/...
 user_router = APIRouter(
     # prefix=/api/v1/user/...
-    tags=['User']
+    # tags=['User']
 )
 
 
