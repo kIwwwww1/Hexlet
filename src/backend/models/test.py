@@ -17,4 +17,4 @@ class Tests(Base):
 
     curr_answer: Mapped[str] = mapped_column(nullable=False)
 
-    lesson: Mapped['Lessons'] = relationship(back_populates='questions')
+    lesson: Mapped['Lessons'] = relationship('Lessons', back_populates='questions')

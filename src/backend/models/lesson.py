@@ -17,5 +17,7 @@ class Lessons(Base):
     )
 
     questions: Mapped[list['Tests']] = relationship(
-        back_populates='lesson', order_by='Tests.id'
+        'Tests',
+        back_populates='lesson',
+        #   order_by='Tests.id'
     )
