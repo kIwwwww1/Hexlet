@@ -11,10 +11,13 @@ class Tests(Base):
     for_lesson_id: Mapped[int] = mapped_column(
         ForeignKey('lesson.id'),
         index=True,
+        init=False,
     )
 
     options: Mapped[list[str]] = mapped_column(JSONB)
 
-    curr_answer: Mapped[str] = mapped_column(nullable=False)
+    curr_answer: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
 
-    lesson: Mapped['Lessons'] = relationship('Lessons', back_populates='questions')
+    lesson: Mapped['Lessons'] = relationship(
+        'Lessons', back_populates='questions', default=None
+    )

@@ -23,5 +23,5 @@ LessonDep = Annotated[LessonService, Depends(get_lesson_service)]
 @lesson_router.post('/create')
 async def create_lesson(
     lesson_data: LessonData, lesson_service: LessonDep, session: SessionDep
-) -> LessonData:
+):
     await lesson_service.create_new_lesson(lesson_data)

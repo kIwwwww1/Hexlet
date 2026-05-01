@@ -19,5 +19,6 @@ class Lessons(Base):
     questions: Mapped[list['Tests']] = relationship(
         'Tests',
         back_populates='lesson',
+        default_factory=list,
         #   order_by='Tests.id'
     )
