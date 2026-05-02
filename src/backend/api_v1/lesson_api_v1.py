@@ -3,7 +3,6 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from src.backend.dependency import SessionDep
-from src.backend.models.lesson import Lessons
 from src.backend.schemas.lesson import LessonData
 from src.backend.services.lesson_service import LessonService
 
@@ -21,7 +20,7 @@ def get_lesson_service(session: SessionDep) -> LessonService:
 LessonDep = Annotated[LessonService, Depends(get_lesson_service)]
 
 
-@lesson_router.post('/create', response_model=Lessons)
+@lesson_router.post('/create')
 async def create_lesson(
     lesson_data: LessonData, lesson_service: LessonDep, session: SessionDep
 ):
