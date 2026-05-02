@@ -20,9 +20,16 @@ def get_lesson_service(session: SessionDep) -> LessonService:
 LessonDep = Annotated[LessonService, Depends(get_lesson_service)]
 
 
-@lesson_router.post('/create')
+@lesson_router.post('/create', response_model=LessonData)
 async def create_lesson(
     lesson_data: LessonData, lesson_service: LessonDep, session: SessionDep
 ):
-    new_lession = await lesson_service.create_new_lesson(lesson_data)
-    return {'LessionData': new_lession}
+    new_lesson = await lesson_service.create_new_lesson(lesson_data)
+    return new_lesson
+
+
+@lesson_router.get('/{id:int}', response_model=LessonData)
+async def get_current_lesson(id: int, lesson_service: LessonDep, session: SessionDep):
+    lesson_obj = await lesson_service.get_lesson_id(id)
+
+    return lesson_obj

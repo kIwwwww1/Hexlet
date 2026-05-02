@@ -1,6 +1,8 @@
 from fastapi import HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from src.backend.logger_config import log
 from src.backend.models.lesson import Lessons
@@ -47,3 +49,17 @@ class LessonService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail='Internal server error',
             )
+
+    async def get_lesson_id(self, lesson_id: int) -> LessonData | None:
+        stmt = (
+            select(Lessons)
+            .options(selectinload(Lessons.questions))
+            .where(Lessons.id == lesson_id)
+        )
+        result = await self.session.execute(stmt)
+        lesson_obj = result.scalar_one_or_none()
+
+        if lesson_obj is None:
+            return None
+
+        return LessonData.model_validate(lesson_obj)
