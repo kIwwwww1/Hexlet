@@ -7,12 +7,12 @@ class Lessons(Base):
     __tablename__ = 'lesson'
 
     title: Mapped[str] = mapped_column(
-        unique=True,
+        # unique=True,
         nullable=False,
     )
 
     information: Mapped[str] = mapped_column(
-        unique=True,
+        # unique=True,
         nullable=False,
     )
 
