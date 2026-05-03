@@ -21,5 +21,4 @@ class Lessons(Base):
         back_populates='lesson',
         default_factory=list,
         order_by='Tests.id',
-        #   order_by='Tests.id'
     )

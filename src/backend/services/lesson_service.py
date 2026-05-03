@@ -51,6 +51,8 @@ class LessonService:
             )
 
     async def get_lesson_id(self, lesson_id: int) -> LessonData | None:
+        """Get lesson by ID and auto sort test quesstion in format -> asc(id: 1, id: 2, id: 3, ...)"""
+
         try:
             stmt = (
                 select(Lessons)
