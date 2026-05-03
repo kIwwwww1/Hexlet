@@ -51,15 +51,28 @@ class LessonService:
             )
 
     async def get_lesson_id(self, lesson_id: int) -> LessonData | None:
-        stmt = (
-            select(Lessons)
-            .options(selectinload(Lessons.questions))
-            .where(Lessons.id == lesson_id)
-        )
-        result = await self.session.execute(stmt)
-        lesson_obj = result.scalar_one_or_none()
+        try:
+            stmt = (
+                select(Lessons)
+                .options(selectinload(Lessons.questions))
+                .where(Lessons.id == lesson_id)
+            )
+            result = await self.session.execute(stmt)
+            lesson_obj = result.scalar_one()
 
-        if lesson_obj is None:
-            return None
+            log.info('get lesson by id')
+            return LessonData.model_validate(lesson_obj)
 
-        return LessonData.model_validate(lesson_obj)
+        except SQLAlchemyError:
+            log.exception('Error creating lesson')
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Lesson not found',
+            )
+
+        except Exception:
+            log.exception('Internal server error')
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail='Internal server error',
+            )
