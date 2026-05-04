@@ -13,6 +13,8 @@ class UserService:
         self.db = UserRepository(session, secret)
 
     async def create_user(self, user_data: UserInDB) -> Users:
+        """Created new user in DB"""
+
         return await self.db.create_new_user(user_data)
 
     # async def get_user(self, id: int) -> str: -> Объект пользователя при работе c бд
