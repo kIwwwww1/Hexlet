@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from src.backend.dependency import SecretDep, SessionDep
-from src.backend.schemas.user import MainUserData, UserCreate, UserData, UserInDB
+from src.backend.schemas.user import MainUserData, UserCreate, UserInDB
 from src.backend.services.user_service import UserService
 
 # the path built relative to -> /api/v1/users/...
@@ -27,7 +27,7 @@ async def test_endpoint(user_service: UserDep) -> str:
     return 'hello world'
 
 
-@user_router.post('/create', response_model=UserData)
+@user_router.post('/create', response_model=MainUserData)
 async def create_user(data: UserCreate, user_service: UserDep):
     """Endpoint to create user in system"""
 

@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.backend.logger_config import log
@@ -29,10 +29,15 @@ class UserRepository:
             self.session.add(new_user)
 
             await self.session.commit()
-            await self.session.refresh(new_user)
-            return new_user
+            user = (
+                await self.session.execute(
+                    select(Users).where(Users.email == new_user.email)
+                )
+            ).scalar_one()
+            log.info(new_user.email)
+            return user
 
-        except SQLAlchemyError:
+        except (SQLAlchemyError, IntegrityError):
             await self.session.rollback()
 
             log.exception('Error creating user')
@@ -53,7 +58,7 @@ class UserRepository:
     async def get_by_id(self, user_id: int) -> Users:
         stmt = select(Users).where(Users.id == user_id)
         result = await self.session.execute(stmt)
-        user = result.scalar_one()
+        user = result.scalar_one_or_none()
 
         if user:
             log.info('Получение пользователя')

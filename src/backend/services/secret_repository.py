@@ -2,6 +2,12 @@ import bcrypt
 
 
 class SecretRepository:
+    # def __init__(self, response: Response) -> None:
+    #     self.response = response
+
+    # def add_cookie(self, data: ):
+    #     self.response.set_cookie(key='session', value=)
+
     @classmethod
     def hash_password(cls, user_password: str) -> str:
         pwd_bytes = user_password.encode('utf-8')
