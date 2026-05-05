@@ -29,12 +29,11 @@ class UserRepository:
             self.session.add(new_user)
 
             await self.session.commit()
+
             user = (
-                await self.session.execute(
-                    select(Users).where(Users.email == new_user.email)
-                )
+                await self.session.execute(select(Users).where(Users.id == new_user.id))
             ).scalar_one()
-            log.info(new_user.email)
+
             return user
 
         except (SQLAlchemyError, IntegrityError):
