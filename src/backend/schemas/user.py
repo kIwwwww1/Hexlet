@@ -1,4 +1,3 @@
-from datetime import datetime
 from random import sample
 from string import ascii_lowercase, ascii_uppercase, digits
 
@@ -51,6 +50,6 @@ class MainUserData(BaseModel):
     energy: int
     floor: int
     floor_level: int
-    created_at: datetime
+    created_at_readable: str
 
     model_config = ConfigDict(from_attributes=True)

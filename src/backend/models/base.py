@@ -13,22 +13,28 @@ class Base(MappedAsDataclass, DeclarativeBase):
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
-        index=True, 
+        index=True,
         init=False,
     )
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        init=False
+        DateTime(timezone=True), server_default=func.now(), init=False
     )
+
+    @property
+    def created_at_readable(self) -> str:
+        """return normal format datatime"""
+
+        return self.created_at.strftime('%Y-%m-%d')
+
 
 engine = create_async_engine(settings.db_url)
 
 async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
+
 async def get_session() -> AsyncGenerator[AsyncSession]:
-    '''Create DB async session with context manager'''
-    
+    """Create DB async session with context manager"""
+
     async with async_session_factory() as session:
         yield session
