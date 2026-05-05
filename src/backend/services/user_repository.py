@@ -50,9 +50,13 @@ class UserRepository:
                 detail='Internal server error',
             )
 
-    async def get_by_id(self, user_id: int) -> Users | None:
+    async def get_by_id(self, user_id: int) -> Users:
         stmt = select(Users).where(Users.id == user_id)
         result = await self.session.execute(stmt)
+        user = result.scalar_one()
 
-        log.info('Получение пользователя')
-        return result.scalar_one_or_none()
+        if user:
+            log.info('Получение пользователя')
+            return user
+
+        raise HTTPException(status_code=404, detail='User not found')

@@ -31,5 +31,5 @@ async def middleware(request: Request, call_next: Callable) -> Response:
 
 
 # Endpoints
-app.include_router(user_router, prefix='/api/v1/users', tags=['User'])
-app.include_router(lesson_router, prefix='/api/v1/lessons', tags=['Lesson'])
+app.include_router(user_router, prefix='/api/v1/users', tags=['Users'])
+app.include_router(lesson_router, prefix='/api/v1/lessons', tags=['Lessons'])

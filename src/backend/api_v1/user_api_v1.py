@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from src.backend.dependency import SecretDep, SessionDep
-from src.backend.schemas.user import UserCreate, UserData, UserInDB
+from src.backend.schemas.user import MainUserData, UserCreate, UserData, UserInDB
 from src.backend.services.user_service import UserService
 
-# the path built relative to -> /api/v1/user/...
+# the path built relative to -> /api/v1/users/...
 user_router = APIRouter(
-    # prefix=/api/v1/user/...
+    # prefix=/api/v1/users/...
     # tags=['User']
 )
 
@@ -35,3 +35,10 @@ async def create_user(data: UserCreate, user_service: UserDep):
     user_data = UserInDB(**data.model_dump())
     resp = await user_service.create_user(user_data)
     return resp
+
+
+@user_router.get('/{id:int}', response_model=MainUserData)
+async def get_user(id: int, user_service: UserDep):
+    """Get user by ID in db and return data in model MainUserData"""
+
+    return await user_service.db.get_by_id(id)

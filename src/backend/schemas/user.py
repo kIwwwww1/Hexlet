@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import sample
 from string import ascii_lowercase, ascii_uppercase, digits
 
@@ -37,5 +38,19 @@ class UserData(BaseModel):
     user_name: str
     email: EmailStr
     unique_id: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class MainUserData(BaseModel):
+    id: int
+    unique_id: str
+    user_name: str
+    level: int
+    xp: int
+    energy: int
+    floor: int
+    floor_level: int
+    created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
