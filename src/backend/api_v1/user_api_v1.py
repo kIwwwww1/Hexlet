@@ -20,13 +20,6 @@ def get_user_service(session: SessionDep, secret: SecretDep) -> UserService:
 UserDep = Annotated[UserService, Depends(get_user_service)]
 
 
-@user_router.get('/')
-async def test_endpoint(user_service: UserDep) -> str:
-    """This is a test endpoint (No prod.)"""
-
-    return 'hello world'
-
-
 @user_router.post('/create', response_model=MainUserData)
 async def create_user(data: UserCreate, user_service: UserDep, response: Response):
     """Endpoint to create user in system"""
@@ -46,6 +39,6 @@ async def get_user(id: int, user_service: UserDep):
 
 @user_router.get('/my', response_model=MainUserData)
 async def get_my(user_service: UserDep, request: Request):
-    """Get user by ID in db and return data in model MainUserData"""
+    """Get user by id in cookie and return data in model MainUserData"""
 
     return await user_service.get_my_data(request)
