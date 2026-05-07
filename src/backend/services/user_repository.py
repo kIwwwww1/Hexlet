@@ -1,4 +1,6 @@
-from fastapi import HTTPException, status
+import json
+
+from fastapi import HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,7 +18,7 @@ class UserRepository:
         self.session = session
         self.secret = secret
 
-    async def create_new_user(self, user_data: UserInDB) -> Users:
+    async def create_new_user(self, user_data: UserInDB, response: Response) -> Users:
         """Creating a new user in db"""
 
         try:
@@ -33,6 +35,20 @@ class UserRepository:
             user = (
                 await self.session.execute(select(Users).where(Users.id == new_user.id))
             ).scalar_one()
+
+            json_data = json.dumps(
+                {
+                    'db_id': user.id,
+                    'uid': user.unique_id,
+                    'username': user.user_name,
+                    'created_at': user.created_at_readable,
+                }
+            )
+            response.set_cookie(
+                key='session',
+                value=json_data,
+                # !!!   Без других параметров т.к это localhost    !!!
+            )
 
             return user
 

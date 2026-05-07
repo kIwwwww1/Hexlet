@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 
 from src.backend.dependency import SecretDep, SessionDep
 from src.backend.schemas.user import MainUserData, UserCreate, UserInDB
@@ -28,12 +28,12 @@ async def test_endpoint(user_service: UserDep) -> str:
 
 
 @user_router.post('/create', response_model=MainUserData)
-async def create_user(data: UserCreate, user_service: UserDep):
+async def create_user(data: UserCreate, user_service: UserDep, response: Response):
     """Endpoint to create user in system"""
 
     # Create unique user id and build final data for add
     user_data = UserInDB(**data.model_dump())
-    resp = await user_service.create_user(user_data)
+    resp = await user_service.create_user(user_data, response)
     return resp
 
 
