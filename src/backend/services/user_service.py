@@ -21,9 +21,14 @@ class UserService:
         return await self.db.create_new_user(user_data, response)
 
     async def get_user_data(self, id: int) -> Users:
+        """get user data in db by user id"""
+
         return await self.db.get_by_id(id)
 
     async def get_my_data(self, request: Request) -> Users:
+        """deserialization data and get user by id"""
+
         json_cookie_data = str(request.cookies.get('session'))
         user_data = json.loads(json_cookie_data)
+
         return await self.db.get_by_id(user_data.get('db_id'))
