@@ -48,6 +48,10 @@ class UserRepository:
                 key='session',
                 value=json_data,
                 # !!!   Без других параметров т.к это localhost    !!!
+                # max_age=3600,
+                # httponly=True,
+                # secure=True,
+                # samesite="lax"
             )
 
             return user

@@ -1,4 +1,6 @@
-from fastapi import Response
+import json
+
+from fastapi import Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.backend.models.user import Users
@@ -18,5 +20,10 @@ class UserService:
 
         return await self.db.create_new_user(user_data, response)
 
-    async def get_user(self, id: int) -> Users:
+    async def get_user_data(self, id: int) -> Users:
         return await self.db.get_by_id(id)
+
+    async def get_my_data(self, request: Request) -> Users:
+        json_cookie_data = str(request.cookies.get('session'))
+        user_data = json.loads(json_cookie_data)
+        return await self.db.get_by_id(user_data.get('db_id'))

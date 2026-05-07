@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Request, Response
 
 from src.backend.dependency import SecretDep, SessionDep
 from src.backend.schemas.user import MainUserData, UserCreate, UserInDB
@@ -41,4 +41,11 @@ async def create_user(data: UserCreate, user_service: UserDep, response: Respons
 async def get_user(id: int, user_service: UserDep):
     """Get user by ID in db and return data in model MainUserData"""
 
-    return await user_service.db.get_by_id(id)
+    return await user_service.get_user_data(id)
+
+
+@user_router.get('/my', response_model=MainUserData)
+async def get_my(user_service: UserDep, request: Request):
+    """Get user by ID in db and return data in model MainUserData"""
+
+    return await user_service.get_my_data(request)
