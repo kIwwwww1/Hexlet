@@ -49,3 +49,10 @@ async def reduce_user_energy(user_service: UserDep, request: Request):
     """Reduce user energy, return current energy"""
 
     return await user_service.reduce_energy(request)
+
+
+@user_router.patch('/add-energy')
+async def add_user_energy(user_service: UserDep, request: Request):
+    """Add user energy, return current energy"""
+
+    return await user_service.add_energy(request)

@@ -99,3 +99,11 @@ class UserRepository:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail='User have <= 0 energy'
             )
+
+    async def add_energy_db(self, user_id: int):
+        """add user energy (+1)"""
+
+        user = await self.get_by_id(user_id)
+        user.energy += 1
+        await self.session.commit()
+        return user.energy
