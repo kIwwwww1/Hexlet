@@ -42,3 +42,10 @@ async def get_my(user_service: UserDep, request: Request):
     """Get user by id in cookie and return data in model MainUserData"""
 
     return await user_service.get_my_data(request)
+
+
+@user_router.patch('/reduce-energy')
+async def reduce_user_energy(user_service: UserDep, request: Request):
+    """Reduce user energy, return current energy"""
+
+    return await user_service.reduce_energy(request)

@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 from fastapi import Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +16,14 @@ class UserService:
     def __init__(self, session: AsyncSession, secret: SecretRepository) -> None:
         self.db = UserRepository(session, secret)
 
+    def deserialize_userdata(self, request: Request) -> dict[str, Any]:
+        json_data = request.cookies.get('session')
+        if not json_data:
+            return {}
+        data = json.loads(json_data)
+
+        return data
+
     async def create_user(self, user_data: UserInDB, response: Response) -> Users:
         """Created new user in DB"""
 
@@ -28,7 +37,10 @@ class UserService:
     async def get_my_data(self, request: Request) -> Users:
         """deserialization data and get user by id"""
 
-        json_cookie_data = str(request.cookies.get('session'))
-        user_data = json.loads(json_cookie_data)
+        user_data = self.deserialize_userdata(request)
 
-        return await self.db.get_by_id(user_data.get('db_id'))
+        return await self.db.get_by_id(int(user_data.get('db_id', 0)))
+
+    async def reduce_energy(self, request: Request):
+        user_data = self.deserialize_userdata(request)
+        return await self.db.reduce_energy_db(int(user_data.get('db_id', 0)))

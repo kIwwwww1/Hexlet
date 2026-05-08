@@ -75,6 +75,8 @@ class UserRepository:
             )
 
     async def get_by_id(self, user_id: int) -> Users:
+        """Get user in DB by user id"""
+
         stmt = select(Users).where(Users.id == user_id)
         result = await self.session.execute(stmt)
         user = result.scalar_one_or_none()
@@ -84,3 +86,16 @@ class UserRepository:
             return user
 
         raise HTTPException(status_code=404, detail='User not found')
+
+    async def reduce_energy_db(self, user_id: int):
+        """Reduce user energy (-1)"""
+
+        user = await self.get_by_id(user_id)
+        if user.energy > 0:
+            user.energy -= 1
+            await self.session.commit()
+            return user.energy
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail='User have <= 0 energy'
+            )
