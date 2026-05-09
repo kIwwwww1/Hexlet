@@ -17,6 +17,8 @@ class UserService:
         self.db = UserRepository(session, secret)
 
     def deserialize_userdata(self, request: Request) -> dict[str, Any]:
+        """JSON -> Python obj"""
+
         json_data = request.cookies.get('session')
         if not json_data:
             return {}
