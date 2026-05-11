@@ -1,0 +1,71 @@
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.button-container.left {
+  left: 20px;
+}
+
+.button-container.center {
+  left: 50%;
+  transform: translateX(-50%)
+}
+
+.main-button {
+  width: 45px;
+  height: 40px;
+  border: none;
+  border-radius: 15px;
+  background-color: #0EA5E9; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #0284C7; 
+  transition: all 0.1s;
+}
+
+.main-button:active {
+  transform: translateY(4px); 
+  box-shadow: 0 2px 0 #0284C7; 
+}
+
+.main-button img {
+  width: 20px; 
+  height: 20px;
+  object-fit: contain; 
+  display: block;
+}
+
+/* HOME BUTTON */
+
+.main-button.home {
+    width: 65px;
+    height: 55px;
+    background-color: #4ADE80;
+    box-shadow: 0 6px 0 #16A34A;
+}
+
+.main-button.home:active {
+    box-shadow: 0 2px 0 #16A34A;
+}
+
+.main-button.home img {
+    width: 30px; 
+    height: 30px;
+}
+
+/* SKIP BUTTON */
+
+.main-button.skip {
+  background-color: #FFB74D;
+  box-shadow: 0 6px 0 #F57C00;
+}
+
+.main-button.skip:active {
+  box-shadow: 0 2px 0 #F57C00;
+}

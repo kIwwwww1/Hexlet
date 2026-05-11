@@ -1,3 +1,5 @@
+@import "./buttons.css";
+
 :root {
   --color-blue: #58a6ff;
   --color-green: #3fb950;
@@ -10,61 +12,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  /* Цвета */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+  user-select: none;
 
   background-color: #F0FDF4;
-  /* background-color: #E0F2FE; */
-
-  /* Градиент */
-  /* background-image: linear-gradient(to top, #BAE6FD 0%, #F0F9FF 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed; */
 }
-
-.info-button {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  
-  width: 45px;
-  height: 40px;
-  border: none;
-  border-radius: 15px;
-  
-  /* Цвета */
-  background-color: #0EA5E9; 
-  font-weight: bold;
-  font-size: 20px;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  /* ОБНОВЛЕННАЯ ТЕНЬ: теперь она цвета #0284C7 */
-  box-shadow: 0 6px 0 #0284C7; 
-  
-  transition: all 0.1s;
-}
-
-/* Эффект нажатия (чтобы тень тоже менялась) */
-.info-button:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 #0284C7; /* Тень уменьшается при клике */
-}
-
-
-/* Эффект при нажатии */
-.info-button:active {
-  transform: translateY(4px); 
-  box-shadow: 0 2px 0 #7dd3fc; 
-}
-
-.info-button img {
-  width: 20px; 
-  height: 20px;
-  object-fit: contain; 
-  display: block;
-}
-
 

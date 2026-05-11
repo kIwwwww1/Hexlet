@@ -6,5 +6,4 @@ import App from './App.vue'
 const app = createApp(App)
 
 app.use(createPinia())
-// Строку с router удалили
 app.mount('#app')
