@@ -6,20 +6,11 @@
   align-items: flex-end;
 }
 
-.button-container.left {
-  left: 20px;
-}
+.button-container.left { left: 20px; }
+.button-container.center { left: 50%; transform: translateX(-50%); }
+.button-container.right { right: 20px; }
 
-.button-container.center {
-    left: 50%;
-    transform: translateX(-50%)
-}
-
-.button-container.right {
-  right: 20px;
-}
-
-
+/* ОБЩИЕ СТИЛИ КНОПКИ */
 .main-button {
   width: 45px;
   height: 40px;
@@ -34,43 +25,52 @@
   transition: all 0.1s;
 }
 
+/* ОБЩАЯ АНИМАЦИЯ НАЖАТИЯ */
 .main-button:active {
   transform: translateY(4px); 
   box-shadow: 0 2px 0 #0284C7; 
 }
 
+/* ОБЩИЕ СТИЛИ ИКОНКИ */
 .main-button img {
   width: 20px; 
   height: 20px;
   object-fit: contain; 
   display: block;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.2));
+  transition: all 0.1s;
 }
 
-/* HOME BUTTON */
+/* ОБЩАЯ АНИМАЦИЯ ИКОНКИ (синхронно с кнопкой) */
+.main-button:active img {
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  transform: translateY(1px) scale(0.95); 
+}
 
+/* --- МОДИФИКАТОРЫ ЦВЕТА И РАЗМЕРА --- */
+
+/* HOME BUTTON */
 .main-button.home {
     width: 60px;
     height: 50px;
     background-color: #4ADE80;
     box-shadow: 0 6px 0 #16A34A;
 }
-
 .main-button.home:active {
+    transform: translateY(4px); 
     box-shadow: 0 2px 0 #16A34A;
 }
-
 .main-button.home img {
     width: 30px; 
     height: 30px;
 }
 
 /* SKIP BUTTON */
-
 .main-button.skip {
   background-color: #FFB74D;
   box-shadow: 0 6px 0 #F57C00;
 }
-
 .main-button.skip:active {
+  transform: translateY(4px); 
   box-shadow: 0 2px 0 #F57C00;
 }

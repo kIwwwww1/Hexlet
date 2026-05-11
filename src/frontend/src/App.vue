@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 
-const message = ref('Привет, Vue 3!')
+const userEnergy = ref(0)
+const userId = ref('Загрузка...')
+
 </script>
 
 <template>
@@ -28,13 +30,13 @@ const message = ref('Привет, Vue 3!')
       <!-- Первая пара (Яблоко) -->
       <div class="status-item">
         <img src="@/assets/images/apple-whole-solid.png" class="status-icon" alt="apple">
-        <div class="button-text-wrapper"><span>XX</span></div>
+        <div class="button-text-wrapper"><span>{{ userEnergy }}</span></div>
       </div>
 
       <!-- Вторая пара (ID) -->
       <div class="status-item">
         <img src="@/assets/images/id-card-solid.png" class="status-icon" alt="id-card">
-        <div class="button-text-wrapper"><span>XXXXXX</span></div>
+        <div class="button-text-wrapper"><span>{{ userId }}</span></div>
       </div>
     </div>
 
