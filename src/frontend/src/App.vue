@@ -23,6 +23,24 @@ const message = ref('Привет, Vue 3!')
         <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
       </button>
     </div>
+    <div class="button-container right">
+
+      <!-- Первая пара (Яблоко) -->
+      <div class="status-item">
+        <img src="@/assets/images/apple-whole-solid.png" class="status-icon" alt="apple">
+        <div class="button-text-wrapper"><span>XX</span></div>
+      </div>
+
+      <!-- Вторая пара (ID) -->
+      <div class="status-item">
+        <img src="@/assets/images/id-card-solid.png" class="status-icon" alt="id-card">
+        <div class="button-text-wrapper"><span>XXXXXX</span></div>
+      </div>
+    </div>
+
+
+
+
   </div>
 </template>
 

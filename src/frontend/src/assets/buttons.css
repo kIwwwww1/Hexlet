@@ -11,9 +11,14 @@
 }
 
 .button-container.center {
-  left: 50%;
-  transform: translateX(-50%)
+    left: 50%;
+    transform: translateX(-50%)
 }
+
+.button-container.right {
+  right: 20px;
+}
+
 
 .main-button {
   width: 45px;
@@ -44,8 +49,8 @@
 /* HOME BUTTON */
 
 .main-button.home {
-    width: 65px;
-    height: 55px;
+    width: 60px;
+    height: 50px;
     background-color: #4ADE80;
     box-shadow: 0 6px 0 #16A34A;
 }
