@@ -12,6 +12,16 @@ services:
       - src/backend/.env
     depends_on:
       - db
+    
+  frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    container_name: vue_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - app
   db:
     image: postgres:latest
     container_name: postgres_db
