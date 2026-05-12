@@ -1,9 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const userEnergy = ref(0)
 const userId = ref('Загрузка...')
 const maxPassedLevel = ref(0) 
+
 
 // Функция для определения цвета кнопки
 const getLvlClass = (levelNum) => {
@@ -45,7 +49,14 @@ const loadUserData = async () => {
   }
 }
 
-// Вызываем функцию загрузки при старте компонента
+const goToLevel = (levelNum) => {
+  if (levelNum <= maxPassedLevel.value + 1) {
+    router.push(`/lessons/${levelNum}`)
+  } else {
+    alert('Этот уровень еще заблокирован!')
+  }
+}
+
 onMounted(async () => {
   await loadUserData()
 })
@@ -54,6 +65,7 @@ onMounted(async () => {
 
 <template>
   <div class="app-container">
+    <RouterView />
 
     <!-- Кнопка ВЫХОД -->
     <div class="button-container top-center">
@@ -65,58 +77,55 @@ onMounted(async () => {
         <!-- КАРТА УРОВНЕЙ -->
     <div class="levels-map">
       <!-- Уровень 1 -->
-      <button :class="['main-button level-node lvl-1', getLvlClass(1), { 'hidden-level': !(1 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(1)" :class="['main-button level-node lvl-1', getLvlClass(1), { 'hidden-level': !(1 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/terminal-solid.png" draggable="false" alt="level-1">
       </button>
 
       <!-- Уровень 2 -->
-      <button :class="['main-button level-node lvl-2', getLvlClass(2), { 'hidden-level': !(2 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(2)" :class="['main-button level-node lvl-2', getLvlClass(2), { 'hidden-level': !(2 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-2">
       </button>
 
       <!-- Уровень 3 -->
-      <button :class="['main-button level-node lvl-3', getLvlClass(3), { 'hidden-level': !(3 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(3)" :class="['main-button level-node lvl-3', getLvlClass(3), { 'hidden-level': !(3 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/code-solid.png" draggable="false" alt="level-3">
       </button>
 
       <!-- Уровень 4 -->
-      <button :class="['main-button level-node lvl-4', getLvlClass(4), { 'hidden-level': !(4 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(4)" :class="['main-button level-node lvl-4', getLvlClass(4), { 'hidden-level': !(4 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-4">
       </button>
 
       <!-- Уровень 5 -->
-      <button :class="['main-button level-node lvl-5', getLvlClass(5), { 'hidden-level': !(5 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(5)" :class="['main-button level-node lvl-5', getLvlClass(5), { 'hidden-level': !(5 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/terminal-solid.png" draggable="false" alt="level-5">
       </button>
 
       <!-- Уровень 6 -->
-      <button :class="['main-button level-node lvl-6', getLvlClass(6), { 'hidden-level': !(6 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(6)" :class="['main-button level-node lvl-6', getLvlClass(6), { 'hidden-level': !(6 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/layer-group-solid.png" draggable="false" alt="level-6">
       </button>
 
       <!-- Уровень 7 -->
-      <button :class="['main-button level-node lvl-7', getLvlClass(7), { 'hidden-level': !(7 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(7)" :class="['main-button level-node lvl-7', getLvlClass(7), { 'hidden-level': !(7 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-7">
       </button>
 
       <!-- Уровень 8 -->
-      <button :class="['main-button level-node lvl-8', getLvlClass(8), { 'hidden-level': !(8 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(8)" :class="['main-button level-node lvl-8', getLvlClass(8), { 'hidden-level': !(8 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/code-solid.png" draggable="false" alt="level-8">
       </button>
 
       <!-- Уровень 9 -->
-      <button :class="['main-button level-node lvl-9', getLvlClass(9), { 'hidden-level': !(9 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(9)" :class="['main-button level-node lvl-9', getLvlClass(9), { 'hidden-level': !(9 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-9">
       </button>
 
       <!-- Уровень 10 -->
-      <button :class="['main-button level-node lvl-10', getLvlClass(10), { 'hidden-level': !(10 <= maxPassedLevel + 1) }]">
+      <button @click="goToLevel(10)" :class="['main-button level-node lvl-10', getLvlClass(10), { 'hidden-level': !(10 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/brain-solid.png" draggable="false" alt="level-10">
       </button>
     </div>
-
-
-
 
     <!-- Левый нижний угол -->
     <div class="button-container left">
@@ -130,7 +139,7 @@ onMounted(async () => {
     
     <!-- Центральная нижняя кнопка ДОМ -->
     <div class="button-container center">
-      <button class="main-button home">
+      <button @click="router.push('/')" class="main-button home">
         <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
       </button>
     </div>
