@@ -1,13 +1,18 @@
-import json
 from typing import Any
 
+import jwt
 from fastapi import Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.backend.config import settings
+from src.backend.logger_config import log
 from src.backend.models.user import Users
 from src.backend.schemas.user import UserInDB
 from src.backend.services.secret_repository import SecretRepository
 from src.backend.services.user_repository import UserRepository
+
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 
 
 class UserService:
@@ -17,14 +22,16 @@ class UserService:
         self.db = UserRepository(session, secret)
 
     def deserialize_userdata(self, request: Request) -> dict[str, Any]:
-        """JSON -> Python obj"""
+        """COOKIE DATA -> Python obj"""
 
-        json_data = request.cookies.get('session')
-        if not json_data:
+        token = request.cookies.get('session')
+
+        if not token:
             return {}
-        data = json.loads(json_data)
 
-        return data
+        user_data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        log.info(user_data)
+        return user_data
 
     async def create_user(self, user_data: UserInDB, response: Response) -> Users:
         """Created new user in DB"""
@@ -40,7 +47,7 @@ class UserService:
         """deserialization data and get user by id"""
 
         user_data = self.deserialize_userdata(request)
-
+        log.debug(user_data)
         return await self.db.get_by_id(int(user_data.get('db_id', 0)))
 
     async def reduce_energy(self, request: Request):

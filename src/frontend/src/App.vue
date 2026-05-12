@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 
 const userEnergy = ref(0)
 const userId = ref('Загрузка...')
-
 const maxPassedLevel = ref(0) 
 
 // Функция для определения цвета кнопки
@@ -17,12 +16,41 @@ const getLvlClass = (levelNum) => {
   }
 }
 
+// Асинхронная функция для запроса данных пользователя
+const loadUserData = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/v1/users/my', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`Ошибка сервера: ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    userId.value = data.id
+    userEnergy.value = data.energy
+    maxPassedLevel.value = data.completedLevel
+
+  } catch (error) {
+    console.error('Не удалось загрузить данные с бэкенда:', error)
+    
+    userId.value = 'Ошибка загрузки'
+    maxPassedLevel.value = 0 
+  }
+}
+
+// Вызываем функцию загрузки при старте компонента
 onMounted(async () => {
-  setTimeout(() => {
-    maxPassedLevel.value = 2
-  })
+  await loadUserData()
 })
 </script>
+
 
 <template>
   <div class="app-container">

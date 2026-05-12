@@ -1,14 +1,17 @@
-import json
-
+import jwt
 from fastapi import HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.backend.config import settings
 from src.backend.logger_config import log
 from src.backend.models.user import Users
 from src.backend.schemas.user import UserInDB
 from src.backend.services.secret_repository import SecretRepository
+
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
 
 
 class UserRepository:
@@ -36,17 +39,18 @@ class UserRepository:
                 await self.session.execute(select(Users).where(Users.id == new_user.id))
             ).scalar_one()
 
-            json_data = json.dumps(
-                {
-                    'db_id': user.id,
-                    'uid': user.unique_id,
-                    'username': user.user_name,
-                    'created_at': user.created_at_readable,
-                }
-            )
+            json_data = {
+                'db_id': user.id,
+                'uid': user.unique_id,
+                'username': user.user_name,
+                'created_at': user.created_at_readable,
+            }
+
+            token = jwt.encode(json_data, SECRET_KEY, ALGORITHM)
+
             response.set_cookie(
                 key='session',
-                value=json_data,
+                value=token,
                 # !!!   Без других параметров т.к это localhost    !!!
                 # max_age=3600,
                 # httponly=True,
