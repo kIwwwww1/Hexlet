@@ -33,9 +33,9 @@ const loadUserData = async () => {
 
     const data = await response.json()
 
-    userId.value = data.id
+    userId.value = data.unique_id
     userEnergy.value = data.energy
-    maxPassedLevel.value = data.completedLevel
+    maxPassedLevel.value = data.floor_level
 
   } catch (error) {
     console.error('Не удалось загрузить данные с бэкенда:', error)

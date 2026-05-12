@@ -47,7 +47,6 @@ class UserService:
         """deserialization data and get user by id"""
 
         user_data = self.deserialize_userdata(request)
-        log.debug(user_data)
         return await self.db.get_by_id(int(user_data.get('db_id', 0)))
 
     async def reduce_energy(self, request: Request):
