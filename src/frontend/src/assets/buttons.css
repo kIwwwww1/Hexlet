@@ -6,9 +6,18 @@
   align-items: flex-end;
 }
 
-.button-container.left { left: 20px; }
-.button-container.center { left: 50%; transform: translateX(-50%); }
-.button-container.right { right: 20px; }
+.button-container.left { 
+  left: 20px; 
+}
+
+.button-container.center { 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
+.button-container.right { 
+  right: 20px; 
+}
 
 /* ОБЩИЕ СТИЛИ КНОПКИ */
 .main-button {
@@ -47,34 +56,117 @@
   transform: translateY(1px) scale(0.95); 
 }
 
-/* --- МОДИФИКАТОРЫ ЦВЕТА И РАЗМЕРА --- */
+/* --- СТИЛИ ДЛЯ КАРТЫ УРОВНЕЙ --- */
+.levels-map {
+  position: fixed;
+  top: 110px;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between; 
+  align-items: center; 
+}
 
-/* EXIT BUTTON */
+/* Класс для скрытых уровней */
+.level-node.hidden-level {
+  visibility: hidden; 
+  pointer-events: none;
+}
+
+/* Базовый размер для кнопок уровней */
+.level-node {
+  width: 60px;
+  height: 54px;
+}
+
+/* Базовый размер для иконок внутри уровней */
+.level-node img {
+  width: 28px;
+  height: 28px;
+}
+
+/* ЗМЕЙКА: Пошаговые смещения */
+.lvl-1, .lvl-5, .lvl-9 { transform: translateX(0); }
+.lvl-2, .lvl-4, .lvl-10 { transform: translateX(50px); }
+.lvl-3, .lvl-6, .lvl-8 { transform: translateX(-50px); }
+.lvl-7 { transform: translateX(-25px); }
+
+/* АНИМАЦИИ ЗМЕЙКИ */
+.lvl-1:active, .lvl-5:active, .lvl-9:active { transform: translateX(0) translateY(4px); }
+.lvl-2:active, .lvl-4:active, .lvl-10:active { transform: translateX(50px) translateY(4px); }
+.lvl-3:active, .lvl-6:active, .lvl-8:active { transform: translateX(-50px) translateY(4px); }
+.lvl-7:active { transform: translateX(-25px) translateY(4px); }
+
+/* СТАТУСЫ УРОВНЕЙ */
+.level-node.passed { 
+  background-color: #86EFAC; 
+  box-shadow: 0 6px 0 #22C55E; 
+}
+.level-node.passed:active { 
+  box-shadow: 0 2px 0 #22C55E; 
+}
+
+.level-node.current { 
+  background-color: #4ADE80; 
+  box-shadow: 0 6px 0 #16A34A; 
+}
+.level-node.current:active { 
+  box-shadow: 0 2px 0 #16A34A; 
+}
+
+.level-node.locked { 
+  background-color: #4ADE80; 
+  box-shadow: 0 6px 0 #16A34A; 
+  pointer-events: none; 
+  opacity: 0.6; 
+}
+
+/* --- ИНДИВИДУАЛЬНЫЕ МОДИФИКАТОРЫ (САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ) --- */
+
+/* EXIT CONTAINER */
 .button-container.top-center {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
+/* EXIT BUTTON */
+.main-button.exit {
+  width: 60px;
+  height: 54px;
+  background-color: #FFB74D;
+  box-shadow: 0 6px 0 #F57C00;
+}
+.main-button.exit:active {
+  transform: translateY(4px); 
+  box-shadow: 0 2px 0 #F57C00;
+}
+.main-button.exit img {
+  width: 35px; 
+  height: 35px;
+}
+
 /* HOME BUTTON */
 .main-button.home {
-    width: 60px;
-    height: 54px;
-    background-color: #4ADE80;
-    box-shadow: 0 6px 0 #16A34A;
+  width: 60px;
+  height: 54px;
+  background-color: #4ADE80;
+  box-shadow: 0 6px 0 #16A34A;
 }
 .main-button.home:active {
-    transform: translateY(4px); 
-    box-shadow: 0 2px 0 #16A34A;
+  transform: translateY(4px); 
+  box-shadow: 0 2px 0 #16A34A;
 }
 .main-button.home img {
-    width: 35px; 
-    height: 35px;
+  width: 35px; 
+  height: 35px;
 }
 
 /* SKIP BUTTON */
@@ -86,21 +178,3 @@
   transform: translateY(4px); 
   box-shadow: 0 2px 0 #F57C00;
 }
-
-/* EXIT BUTTON */
-.main-button.exit {
-    width: 60px;
-    height: 54px;
-    background-color: #FFB74D;
-    box-shadow: 0 6px 0 #F57C00;
-}
-.main-button.exit:active {
-    transform: translateY(4px); 
-    box-shadow: 0 2px 0 #F57C00;
-}
-.main-button.exit img {
-    width: 35px; 
-    height: 35px;
-}
-
-

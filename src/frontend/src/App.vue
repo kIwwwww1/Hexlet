@@ -1,9 +1,27 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const userEnergy = ref(0)
 const userId = ref('Загрузка...')
 
+const maxPassedLevel = ref(0) 
+
+// Функция для определения цвета кнопки
+const getLvlClass = (levelNum) => {
+  if (levelNum <= maxPassedLevel.value) {
+    return 'passed'
+  } else if (levelNum === maxPassedLevel.value + 1) {
+    return 'current'
+  } else {
+    return 'locked'
+  }
+}
+
+onMounted(async () => {
+  setTimeout(() => {
+    maxPassedLevel.value = 2
+  })
+})
 </script>
 
 <template>
@@ -16,58 +34,59 @@ const userId = ref('Загрузка...')
       </button>
     </div>
 
-    <!-- КАРТА УРОВНЕЙ -->
+        <!-- КАРТА УРОВНЕЙ -->
     <div class="levels-map">
-      <!-- Уровень 10 -->
-      <button class="main-button home level-node lvl-10">
-        <img src="@/assets/images/brain-solid.png" draggable="false" alt="level-10">
-      </button>
-      
-      <!-- Уровень 9 -->
-      <button class="main-button home level-node lvl-9">
-        <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-9">
-      </button>
-      
-      <!-- Уровень 8 -->
-      <button class="main-button home level-node lvl-8">
-        <img src="@/assets/images/code-solid.png" draggable="false" alt="level-8">
-      </button>
-      
-      <!-- Уровень 7 -->
-      <button class="main-button home level-node lvl-7">
-        <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-7">
-      </button>
-      
-      <!-- Уровень 6 -->
-      <button class="main-button home level-node lvl-6">
-        <img src="@/assets/images/layer-group-solid.png" draggable="false" alt="level-6">
-      </button>
-      
-      <!-- Уровень 5 -->
-      <button class="main-button home level-node lvl-5">
-        <img src="@/assets/images/terminal-solid.png" draggable="false" alt="level-5">
-      </button>
-      
-      <!-- Уровень 4 -->
-      <button class="main-button home level-node lvl-4">
-        <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-4">
-      </button>
-      
-      <!-- Уровень 3 -->
-      <button class="main-button home level-node lvl-3">
-        <img src="@/assets/images/code-solid.png" draggable="false" alt="level-3">
-      </button>
-      
-      <!-- У–ровень 2 -->
-      <button class="main-button home level-node lvl-2">
-        <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-2">
-      </button>
-      
-      <!-- Уровень 1 (Первый уровень у дома) -->
-      <button class="main-button home level-node lvl-1">
+      <!-- Уровень 1 -->
+      <button :class="['main-button level-node lvl-1', getLvlClass(1), { 'hidden-level': !(1 <= maxPassedLevel + 1) }]">
         <img src="@/assets/images/terminal-solid.png" draggable="false" alt="level-1">
       </button>
+
+      <!-- Уровень 2 -->
+      <button :class="['main-button level-node lvl-2', getLvlClass(2), { 'hidden-level': !(2 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-2">
+      </button>
+
+      <!-- Уровень 3 -->
+      <button :class="['main-button level-node lvl-3', getLvlClass(3), { 'hidden-level': !(3 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/code-solid.png" draggable="false" alt="level-3">
+      </button>
+
+      <!-- Уровень 4 -->
+      <button :class="['main-button level-node lvl-4', getLvlClass(4), { 'hidden-level': !(4 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-4">
+      </button>
+
+      <!-- Уровень 5 -->
+      <button :class="['main-button level-node lvl-5', getLvlClass(5), { 'hidden-level': !(5 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/terminal-solid.png" draggable="false" alt="level-5">
+      </button>
+
+      <!-- Уровень 6 -->
+      <button :class="['main-button level-node lvl-6', getLvlClass(6), { 'hidden-level': !(6 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/layer-group-solid.png" draggable="false" alt="level-6">
+      </button>
+
+      <!-- Уровень 7 -->
+      <button :class="['main-button level-node lvl-7', getLvlClass(7), { 'hidden-level': !(7 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/lightbulb-solid.png" draggable="false" alt="level-7">
+      </button>
+
+      <!-- Уровень 8 -->
+      <button :class="['main-button level-node lvl-8', getLvlClass(8), { 'hidden-level': !(8 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/code-solid.png" draggable="false" alt="level-8">
+      </button>
+
+      <!-- Уровень 9 -->
+      <button :class="['main-button level-node lvl-9', getLvlClass(9), { 'hidden-level': !(9 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/dumbbell-solid.png" draggable="false" alt="level-9">
+      </button>
+
+      <!-- Уровень 10 -->
+      <button :class="['main-button level-node lvl-10', getLvlClass(10), { 'hidden-level': !(10 <= maxPassedLevel + 1) }]">
+        <img src="@/assets/images/brain-solid.png" draggable="false" alt="level-10">
+      </button>
     </div>
+
 
 
 
@@ -108,67 +127,9 @@ const userId = ref('Загрузка...')
   </div>
 </template>
 
-
-
 <style scoped>
-
 .app-container {
   font-family: sans-serif;
   text-align: center;
 }
-
-
-
-.levels-map {
-  position: fixed;
-  top: 120px;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  
-  width: 200px;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: space-between;
-  align-items: center; 
-}
-
-.level-node img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-
-.level-node {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-}
-
-
-.lvl-1, .lvl-5, .lvl-9 {
-  transform: translateX(0);
-}
-
-.lvl-2, .lvl-4, .lvl-10 {
-  transform: translateX(50px);
-}
-
-.lvl-3, .lvl-6, .lvl-8 {
-  transform: translateX(-50px);
-}
-
-.lvl-7 {
-  transform: translateX(-25px);
-}
-
-
-.level-node:active { transform: translateY(4px); }
-.lvl-1:active, .lvl-5:active, .lvl-9:active { transform: translateX(0) translateY(4px); }
-.lvl-2:active, .lvl-4:active, .lvl-10:active { transform: translateX(50px) translateY(4px); }
-.lvl-3:active, .lvl-6:active, .lvl-8:active { transform: translateX(-50px) translateY(4px); }
-.lvl-7:active { transform: translateX(-25px) translateY(4px); }
-
-
 </style>
