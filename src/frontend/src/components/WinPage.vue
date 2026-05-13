@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted} from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -7,24 +7,51 @@ const route = useRoute()
 // Реактивная переменная для отслеживания показа видео
 const isVideoVisible = ref(false)
 
-// Берем имя пользователя из параметров. Если пусто — пишем Игрок
-const username = computed(() => route.query.username || 'Игрок')
-
 const showVideo = () => {
   isVideoVisible.value = true
 }
 
-// Функция-реф для настройки видеоплеера при его появлении в DOM
 const setVideoVolume = (el) => {
   if (el) {
-    // Громкость задается от 0.0 (тишина) до 1.0 (максимум). 0.25 — это ровно 25%
     el.volume = 0.25
   }
 }
+
+const userName = ref('')
+
+// Асинхронная функция для запроса данных пользователя
+const loadUserData = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/v1/users/my', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`Ошибка сервера: ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    userName.value = data.user_name
+
+  } catch (error) {
+    console.error('Не удалось загрузить данные с бэкенда:', error)
+  }
+}
+
+onMounted(async () => {
+  await loadUserData()
+})
+
 </script>
 
 <template>
   <div class="winner-screen">
+
     <!-- Иллюстрация скрывается, когда воспроизводится видео -->
     <div v-if="!isVideoVisible" class="illustration-container">
       <img src="@/assets/images/kapi2.png" draggable="false" class="beaver-img" alt="Winner Beaver" />
@@ -33,11 +60,11 @@ const setVideoVolume = (el) => {
     <!-- Основной контент (скрывается после клика на кнопку) -->
     <div v-if="!isVideoVisible" class="main-content">
       <h1 class="winner-title">
-        <span class="username">{ {{ username }} }</span> WINNER !!!
+        <span class="username">{{ userName }}</span> WINNER !!!
       </h1>
       
       <p class="subtitle">ЗАБЕРИ СВОЙ ПРИЗ</p>
-
+      <!-- <h1>↓</h1> -->
       <!-- При нажатии вызываем функцию показа видео -->
       <button @click="showVideo" class="main-button winner">
         <img src="@/assets/images/crown-solid.png" draggable="false" alt="exit">
@@ -46,7 +73,6 @@ const setVideoVolume = (el) => {
 
     <!-- Контейнер с видеоплеером (показывается только после клика) -->
     <div v-else class="video-container">
-      <!-- ИСПРАВЛЕНО: Добавлен динамический :ref="setVideoVolume" -->
       <video :ref="setVideoVolume" class="prize-video" controls autoplay>
         <source src="@/assets/videos/kapi.mp4" type="video/mp4" />
         Ваш браузер не поддерживает встроенные видео.
@@ -154,24 +180,4 @@ const setVideoVolume = (el) => {
   background-color: #000000;
 }
 
-@media (max-width: 768px) {
-  .winner-title {
-    font-size: 2.2rem;
-  }
-  .illustration-container {
-    position: relative;
-    top: 0;
-    right: 0;
-    margin-bottom: 20px;
-    width: 75%;
-  }
-  .winner-screen {
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-  }
-  .video-container {
-    width: 100%;
-  }
-}
 </style>
