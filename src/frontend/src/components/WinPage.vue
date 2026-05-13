@@ -1,45 +1,64 @@
 <script setup>
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const router = useRouter()
 const route = useRoute()
 
-// Берем имя пользователя из параметров или стейта. Если пусто — пишем Гость
+// Реактивная переменная для отслеживания показа видео
+const isVideoVisible = ref(false)
+
+// Берем имя пользователя из параметров. Если пусто — пишем Игрок
 const username = computed(() => route.query.username || 'Игрок')
 
-// Функция для обработки клика по кнопке приза
-const claimPrize = () => {
-  // Перенаправляем пользователя обратно на карту или страницу призов
-  router.push('/')
+const showVideo = () => {
+  isVideoVisible.value = true
 }
 
+// Функция-реф для настройки видеоплеера при его появлении в DOM
+const setVideoVolume = (el) => {
+  if (el) {
+    // Громкость задается от 0.0 (тишина) до 1.0 (максимум). 0.25 — это ровно 25%
+    el.volume = 0.25
+  }
+}
 </script>
 
 <template>
   <div class="winner-screen">
-    <!-- Иллюстрация бобра-программиста в правом верхнем углу -->
-    <div class="illustration-container">
+    <!-- Иллюстрация скрывается, когда воспроизводится видео -->
+    <div v-if="!isVideoVisible" class="illustration-container">
       <img src="@/assets/images/kapi2.png" draggable="false" class="beaver-img" alt="Winner Beaver" />
     </div>
 
-    <!-- Основной контент по центру -->
-    <div class="main-content">
+    <!-- Основной контент (скрывается после клика на кнопку) -->
+    <div v-if="!isVideoVisible" class="main-content">
       <h1 class="winner-title">
         <span class="username">{ {{ username }} }</span> WINNER !!!
       </h1>
       
       <p class="subtitle">ЗАБЕРИ СВОЙ ПРИЗ</p>
 
-      <button class="main-button winner">
+      <!-- При нажатии вызываем функцию показа видео -->
+      <button @click="showVideo" class="main-button winner">
         <img src="@/assets/images/crown-solid.png" draggable="false" alt="exit">
       </button>
+    </div>
+
+    <!-- Контейнер с видеоплеером (показывается только после клика) -->
+    <div v-else class="video-container">
+      <!-- ИСПРАВЛЕНО: Добавлен динамический :ref="setVideoVolume" -->
+      <video :ref="setVideoVolume" class="prize-video" controls autoplay>
+        <source src="@/assets/videos/kapi.mp4" type="video/mp4" />
+        Ваш браузер не поддерживает встроенные видео.
+      </video>
+      
+      <!-- Кнопка закрытия видео, если нужно вернуться обратно к экрану победы -->
+      <button @click="isVideoVisible = false" class="close-video-btn">✕ Закрыть видео</button>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .winner-screen {
   position: relative;
   width: 100%;
@@ -98,33 +117,61 @@ const claimPrize = () => {
   letter-spacing: 1.5px;
 }
 
-.prize-button {
-  background-color: #ff8c42;
-  border: none;
-  border-radius: 12px;
-  width: 65px;
-  height: 65px;
+
+/* СТИЛИ ДЛЯ ВИДЕОПЛЕЕРА */
+.video-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  justify-content: center;
+  width: 80%;
+  max-width: 800px;
+  z-index: 20;
 }
 
-.prize-button:hover {
-  background-color: #f07b33;
-  transform: scale(1.05);
+.prize-video {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  background-color: #000000;
 }
 
-.prize-button:active {
-  transform: scale(0.95);
-}
-
-.crown-icon {
-  width: 35px;
-  height: 35px;
+.close-video-btn {
+  margin-top: 15px;
+  background-color: #333333;
   color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
+.close-video-btn:hover {
+  background-color: #000000;
+}
+
+@media (max-width: 768px) {
+  .winner-title {
+    font-size: 2.2rem;
+  }
+  .illustration-container {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 20px;
+    width: 75%;
+  }
+  .winner-screen {
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+  }
+  .video-container {
+    width: 100%;
+  }
+}
 </style>
