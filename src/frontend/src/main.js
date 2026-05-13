@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import LevelPage from './components/LessonPage.vue'
 import HOME from './components/MapPage.vue'
+import WinPage from './components/WinPage.vue'
 
 const routes = [
   { 
@@ -15,6 +16,10 @@ const routes = [
   { 
     path: '/lessons/:id',
     component: LevelPage 
+  },
+  { 
+    path: '/winner',
+    component: WinPage 
   }
 ]
 

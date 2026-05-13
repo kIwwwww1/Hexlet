@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const userEnergy = ref(10)
+const userEnergy = ref(0)
 const userId = ref('XXXXXX')
 const maxPassedLevel = ref(0) 
 
@@ -68,7 +68,7 @@ onMounted(async () => {
 
     <!-- Кнопка ВЫХОД -->
     <div class="button-container top-center">
-      <button class="main-button exit">
+      <button v-if="maxPassedLevel == 10" @click="router.push('/winner')" class="main-button exit">
         <img src="@/assets/images/door-open-solid.png" draggable="false" alt="exit">
       </button>
     </div>

@@ -178,3 +178,19 @@
   transform: translateY(4px); 
   box-shadow: 0 2px 0 #F57C00;
 }
+
+/* WINNER BUTTON */
+.main-button.winner {
+  width: 60px;
+  height: 54px;
+  background-color: #FFB74D;
+  box-shadow: 0 6px 0 #F57C00;
+}
+.main-button.winner:active {
+  transform: translateY(4px); 
+  box-shadow: 0 2px 0 #F57C00;
+}
+.main-button.winner img {
+  width: 35px; 
+  height: 35px;
+}
