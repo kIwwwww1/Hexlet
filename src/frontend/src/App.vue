@@ -4,8 +4,8 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const userEnergy = ref(0)
-const userId = ref('Загрузка...')
+const userEnergy = ref(10)
+const userId = ref('XXXXXX')
 const maxPassedLevel = ref(0) 
 
 
