@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
 import LevelPage from './components/LessonPage.vue'
-import HOME from './App.vue' 
+import HOME from './components/MapPage.vue'
 
 const routes = [
   { 
