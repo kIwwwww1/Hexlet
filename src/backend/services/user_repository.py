@@ -95,6 +95,7 @@ class UserRepository:
         """Reduce user energy (-1)"""
 
         user = await self.get_by_id(user_id)
+        log.info('Снижение энергии пользователя')
         if user.energy > 0:
             user.energy -= 1
             await self.session.commit()
