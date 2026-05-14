@@ -1,8 +1,8 @@
 <script setup>
 import { computed, ref, onMounted} from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
-const route = useRoute()
+const router = useRouter()
 
 // Реактивная переменная для отслеживания показа видео
 const isVideoVisible = ref(false)
@@ -80,6 +80,7 @@ onMounted(async () => {
       
       <!-- Кнопка закрытия видео, если нужно вернуться обратно к экрану победы -->
       <button @click="isVideoVisible = false" class="close-video-btn">✕ Закрыть видео</button>
+      <button @click="router.push('/')" class="close-video-btn go-home">Главное меню</button>
     </div>
   </div>
 </template>
@@ -177,7 +178,24 @@ onMounted(async () => {
 }
 
 .close-video-btn:hover {
-  background-color: #000000;
+    background-color: #000000;
+}
+
+.close-video-btn.go-home {
+  margin-top: 15px;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.close-video-btn.go-home:hover {
+    background-color: #f9d8d8;
 }
 
 </style>
