@@ -8,6 +8,7 @@ import LevelPage from './components/LessonPage.vue'
 import HOME from './components/MapPage.vue'
 import WinPage from './components/WinPage.vue'
 
+
 const routes = [
   { 
     path: '/',

@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { goToGithub } from '@/navigator'
+
 
 const router = useRouter()
 
@@ -154,13 +156,12 @@ onMounted(async () => {
         <div class="button-text-wrapper"><span>{{ userId }}</span></div>
       </div>
       <div class="status-item">
-        <button class="main-button skip">
+        <button class="main-button skip" @click="goToGithub">
           <img src="@/assets/images/user-solid.png" draggable="false" alt="add">
         </button>
       </div>
     </div>
     
-    <!-- <RouterView /> -->
   </div>
 
 </template>
