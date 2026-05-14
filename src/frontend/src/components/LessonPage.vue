@@ -74,7 +74,7 @@ onMounted(async () => {
       <button @click="router.push('/')" class="main-button home">
         <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
       </button>
-      <button @click="router.push('/')" class="main-button go-tests">
+      <button @click="router.push('/questions')" class="main-button go-tests">
         <img src="@/assets/images/angle-right-solid.png" draggable="false" alt="settings">
       </button>
     </div>
@@ -96,11 +96,17 @@ onMounted(async () => {
 }
 
 .main-button.home {
-  opacity: 0.95;
+  opacity: 0.6;
 }
 
 .main-button.go-tests{
-  opacity: 0.95;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.main-button:hover{
+  opacity: 1;
+  transition: all 0.3s ease;
 }
 
 /* Общий контейнер страницы */
