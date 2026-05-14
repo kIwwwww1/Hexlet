@@ -62,7 +62,7 @@ class LessonService:
             result = await self.session.execute(stmt)
             lesson_obj = result.scalar_one()
 
-            log.info('get lesson by id')
+            log.info(f'get lesson by id "{lesson_id}"')
             return LessonData.model_validate(lesson_obj)
 
         except SQLAlchemyError:

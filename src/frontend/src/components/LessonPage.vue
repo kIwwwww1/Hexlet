@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -9,7 +9,38 @@ const currentPath = computed(() => route.path)
 const fullPath = computed(() => route.fullPath)
 const lessonId = computed(() => route.params.id)
 
-console.log(currentPath.value)
+const lessonData = ref(null)
+
+// Асинхронная функция для запроса данных урока
+const loadLessonData = async () => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/lessons/${lessonId.value}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json(); 
+      throw new Error(`Ошибка HTTP: ${response.status}. Сообщение: ${JSON.stringify(errorData)}`);
+    }
+
+    const data = await response.json();
+    
+    console.log('Данные успешно получены:', data); 
+    lessonData.value = data;
+
+  } catch (error) {
+    console.error('Ошибка при загрузке данных урока:', error);
+  }
+};
+
+onMounted(async () => {
+  await loadLessonData()
+})
+
 </script>
 
 <template>
