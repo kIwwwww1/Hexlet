@@ -36,6 +36,15 @@ const loadLessonData = async () => {
   }
 };
 
+const goToQuestions = () => {
+  router.push({
+    name: 'questions',
+    params: { id: lessonId.value },
+    state: { questions: lessonData.value.questions }
+  })
+}
+
+
 onMounted(async () => {
   await loadLessonData()
 })
@@ -71,12 +80,14 @@ onMounted(async () => {
     </div>
     
     <div class="button-container center">
+
       <button @click="router.push('/')" class="main-button home">
         <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
       </button>
-      <button @click="router.push('/questions')" class="main-button go-tests">
+      <button @click="goToQuestions" class="main-button go-tests">
         <img src="@/assets/images/angle-right-solid.png" draggable="false" alt="settings">
       </button>
+
     </div>
 
     <div class="button-container right">

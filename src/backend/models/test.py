@@ -14,6 +14,8 @@ class Tests(Base):
         init=False,
     )
 
+    question_text: Mapped[str] = mapped_column(nullable=False)
+
     options: Mapped[list[str]] = mapped_column(JSONB)
 
     curr_answer: Mapped[list[str]] = mapped_column(JSONB, nullable=False)

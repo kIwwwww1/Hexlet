@@ -7,6 +7,7 @@ import App from './App.vue'
 import LevelPage from './components/LessonPage.vue'
 import HOME from './components/MapPage.vue'
 import WinPage from './components/WinPage.vue'
+import QuestionsView from './components/QuestionsView.vue'
 
 
 const routes = [
@@ -17,6 +18,11 @@ const routes = [
   { 
     path: '/lessons/:id',
     component: LevelPage 
+  },
+  { 
+    path: '/questions/:id',
+    name: 'questions',
+    component: QuestionsView 
   },
   { 
     path: '/winner',
