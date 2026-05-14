@@ -13,9 +13,9 @@ from .user_api_v1 import user_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    log.info('Запуск приложения')
+    log.info('[X] Запуск приложения [X]')
     yield
-    log.info('Выключение приложения')
+    log.info('[X] Выключение приложения [X]')
 
 
 app = FastAPI(lifespan=lifespan)
