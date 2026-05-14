@@ -5,8 +5,6 @@ import { computed, onMounted, ref } from 'vue'
 const route = useRoute()
 const router = useRouter()
 
-const currentPath = computed(() => route.path)
-const fullPath = computed(() => route.fullPath)
 const lessonId = computed(() => route.params.id)
 
 const lessonData = ref(null)
@@ -45,7 +43,6 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h1>Текущий путь: {{ currentPath }}</h1>
     <p>ID урока: {{ lessonId }}</p>
 
         <div class="button-container left">
@@ -61,6 +58,9 @@ onMounted(async () => {
     <div class="button-container center">
       <button @click="router.push('/')" class="main-button home">
         <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
+      </button>
+      <button @click="router.push('/')" class="main-button go-tests">
+        <img src="@/assets/images/angle-right-solid.png" draggable="false" alt="settings">
       </button>
     </div>
 
@@ -79,4 +79,17 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
+.main-button {
+  opacity: 0.5;
+}
+
+.main-button.home {
+  opacity: 0.6;
+}
+
+.main-button.go-tests{
+  opacity: 1;
+}
+
 </style>

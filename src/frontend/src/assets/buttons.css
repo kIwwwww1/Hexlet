@@ -194,3 +194,19 @@
   width: 35px; 
   height: 35px;
 }
+
+/* NEXT BUTTON */
+.main-button.go-tests {
+  width: 120px;
+  height: 54px;
+  background-color: #BFDBFE;
+  box-shadow: 0 6px 0 #60A5FA;
+}
+.main-button.go-tests:active {
+  transform: translateY(4px); 
+  box-shadow: 0 2px 0 #F57C00;
+}
+.main-button.go-tests img {
+  width: 35px; 
+  height: 35px;
+}
