@@ -1,22 +1,21 @@
-"""create lesson
+"""create db
 
-Revision ID: d9d32ca6470d
-Revises: ed75a8470aad
-Create Date: 2026-04-27 11:43:08.603308
+Revision ID: 6e1657bffacd
+Revises: 
+Create Date: 2026-05-14 19:50:25.464234
 
 """
-from collections.abc import Sequence
+from typing import Sequence, Union
 
+from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
-from alembic import op
-
 # revision identifiers, used by Alembic.
-revision: str = 'd9d32ca6470d'
-down_revision: str | Sequence[str] | None = 'ed75a8470aad'
-branch_labels: str | Sequence[str] | None = None
-depends_on: str | Sequence[str] | None = None
+revision: str = '6e1657bffacd'
+down_revision: Union[str, Sequence[str], None] = None
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
@@ -27,9 +26,7 @@ def upgrade() -> None:
     sa.Column('information', sa.String(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('information'),
-    sa.UniqueConstraint('title')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_lesson_id'), 'lesson', ['id'], unique=False)
     op.create_table('users',
@@ -53,7 +50,7 @@ def upgrade() -> None:
     op.create_table('test',
     sa.Column('for_lesson_id', sa.Integer(), nullable=False),
     sa.Column('options', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
-    sa.Column('curr_answer', sa.String(), nullable=False),
+    sa.Column('curr_answer', postgresql.JSONB(astext_type=sa.Text()), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['for_lesson_id'], ['lesson.id'], ),
