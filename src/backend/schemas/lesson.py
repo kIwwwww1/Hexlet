@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class TestData(BaseModel):
+    question_text: str
     options: list[str] = Field(min_length=2)
     curr_answer: list[str] = Field(min_length=1)
 
