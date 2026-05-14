@@ -14,8 +14,10 @@ export const reduceUserEnergy = async () => {
       return data
     } else {
       console.error('Ошибка сервера при уменьшении энергии:', response.status)
+      throw new Error(`Ошибка сервера: ${response.status}`)
     }
   } catch (error) {
     console.error('Сетевая ошибка при запросе reduce-energy:', error)
+    throw error 
   }
 }
