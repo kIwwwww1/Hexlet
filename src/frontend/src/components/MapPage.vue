@@ -11,6 +11,9 @@ const userId = ref('XXXXXX')
 const maxPassedLevel = ref(0)
 const isProcessing = ref(false)
 
+const DEFAULT_ICON = 'terminal-solid.png'
+const PASSED_ICON = 'location-dot-solid.png'
+
 const LEVEL_ICONS = {
   1: 'terminal-solid.png',
   2: 'lightbulb-solid.png',
@@ -21,12 +24,19 @@ const LEVEL_ICONS = {
   7: 'lightbulb-solid.png',
   8: 'code-solid.png',
   9: 'dumbbell-solid.png',
-  10: 'brain-solid.png'
+  10: 'brain-solid.png',
+  11: 'location-dot-solid.png',
 }
 
-const getIconUrl = (filename) => {
+const getIconUrl = (levelNum) => {
+  if (levelNum === maxPassedLevel.value + 1) {
+    return new URL(`/src/assets/images/${PASSED_ICON}`, import.meta.url).href
+  }
+  
+  const filename = LEVEL_ICONS[levelNum] || DEFAULT_ICON
   return new URL(`/src/assets/images/${filename}`, import.meta.url).href
 }
+
 
 const getLvlClass = (levelNum) => {
   if (levelNum <= maxPassedLevel.value) return 'passed'
@@ -128,7 +138,7 @@ onMounted(async () => {
           { 'hidden-level': !(level <= maxPassedLevel + 1) }
         ]"
       >
-        <img :src="getIconUrl(LEVEL_ICONS[level])" draggable="false" :alt="`level-${level}`">
+        <img :src="getIconUrl(level)" draggable="false" :alt="`level-${level}`">
       </button>
     </div>
 
@@ -172,8 +182,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
 .app-container {
   font-family: sans-serif;
   text-align: center;
 }
+
 </style>

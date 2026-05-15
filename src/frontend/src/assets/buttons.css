@@ -121,8 +121,8 @@
   background-color: #BFDBFE; 
   box-shadow: 0 6px 0 #3B82F6; 
   /* animation: gentle-glow 2s infinite ease-in-out; */
-
 }
+
 .level-node.current:active { 
   box-shadow: 0 2px 0 #16A34A; 
 }
