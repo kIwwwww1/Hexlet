@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { goToGithub } from '@/navigator'
-import { reduceUserEnergy } from '@/func'
+import { reduceUserEnergy, addUserEnergy } from '@/func'
 
 const router = useRouter()
 
@@ -11,7 +11,6 @@ const userId = ref('XXXXXX')
 const maxPassedLevel = ref(0)
 const isProcessing = ref(false)
 
-// Конфигурация иконок для каждого уровня
 const LEVEL_ICONS = {
   1: 'terminal-solid.png',
   2: 'lightbulb-solid.png',
@@ -25,7 +24,6 @@ const LEVEL_ICONS = {
   10: 'brain-solid.png'
 }
 
-// Динамический импорт изображений для Vite
 const getIconUrl = (filename) => {
   return new URL(`/src/assets/images/${filename}`, import.meta.url).href
 }
@@ -38,7 +36,6 @@ const getLvlClass = (levelNum) => {
 
 const loadUserData = async () => {
   try {
-    // Рекомендуется заменить 'http://localhost:8000' на import.meta.env.VITE_API_URL
     const response = await fetch('http://localhost:8000/api/v1/users/my', {
       method: 'GET',
       credentials: 'include',
@@ -51,10 +48,26 @@ const loadUserData = async () => {
     userId.value = data.unique_id
     userEnergy.value = data.energy
     maxPassedLevel.value = data.floor_level
+    
   } catch (error) {
     console.error('Не удалось загрузить данные с бэкенда:', error)
     userId.value = 'Ошибка загрузки'
     maxPassedLevel.value = 0
+  }
+}
+
+const handleAddEnergyClick = async () => {
+  if (isProcessing.value) return
+  try {
+    isProcessing.value = true
+
+    const newEnergy = await addUserEnergy()
+
+    userEnergy.value = newEnergy 
+  } catch (error) {
+    alert('Не удалось добавить энергию. Попробуйте позже.')
+  } finally {
+    isProcessing.value = false
   }
 }
 
@@ -68,10 +81,10 @@ const handleLevelClick = async (levelNumber) => {
 
   try {
     isProcessing.value = true
-    await reduceUserEnergy()
     
-    // Оптимистичное обновление интерфейса или декремент
-    if (userEnergy.value > 0) userEnergy.value-- 
+    const newEnergy = await reduceUserEnergy()
+    
+    userEnergy.value = newEnergy
     
     router.push(`/lessons/${levelNumber}`)
   } catch (error) {
@@ -93,6 +106,7 @@ onMounted(async () => {
 
 <template>
   <div class="app-container">
+
     <!-- Кнопка ВЫХОД -->
     <div class="button-container top-center">
       <button v-if="maxPassedLevel === 10" @click="router.push('/winner')" class="main-button exit">
@@ -100,7 +114,7 @@ onMounted(async () => {
       </button>
     </div>
 
-    <!-- КАРТА УРОВНЕЙ (Оптимизированная через v-for) -->
+    <!-- КАРТА УРОВНЕЙ -->
     <div class="levels-map">
       <button 
         v-for="level in 10" 
@@ -120,13 +134,16 @@ onMounted(async () => {
 
     <!-- Левый нижний угол -->
     <div class="button-container left">
-      <button class="main-button">
+      <!-- Вешаем вызов новой функции handleAddEnergyClick -->
+      <button @click="handleAddEnergyClick" :disabled="isProcessing" class="main-button">
         <img src="@/assets/images/question-solid.png" draggable="false" alt="info">
       </button>
       <button class="main-button skip">
         <img src="@/assets/images/forward-solid.png" draggable="false" alt="add">
       </button>
     </div>
+
+
     
     <!-- Центральная нижняя кнопка ДОМ -->
     <div class="button-container center">
