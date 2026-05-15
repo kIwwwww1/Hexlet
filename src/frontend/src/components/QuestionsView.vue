@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { goToGithub } from '@/navigator'
 
@@ -7,7 +7,17 @@ const route = useRoute()
 const router = useRouter()
 const questions = ref([])
 
+const selectedAnswers = ref([])
+
+const currentQuestionIndex = ref(0)
+const selectedAnswer = ref('')
+const errorMessage = ref('')
+
 const isPageLoading = ref(true)
+
+const currentQuestion = computed(() => {
+  return questions.value[currentQuestionIndex.value]
+})
 
 onMounted(() => {
   // Искусственная задержка в 500мс для плавной анимации входа
@@ -48,6 +58,79 @@ const submitTest = () => {
 const goBack = () => {
   router.go(-1)
 }
+
+const checkAnswer = () => {
+
+  const correctAnswers = currentQuestion.value.curr_answer
+
+  // ---------- ОДИН ОТВЕТ ----------
+  if (correctAnswers.length === 1) {
+
+    if (!selectedAnswer.value) {
+      errorMessage.value = 'Выберите вариант ответа'
+      return
+    }
+
+    if (correctAnswers.includes(selectedAnswer.value)) {
+
+      errorMessage.value = ''
+      nextQuestion()
+
+    } else {
+
+      errorMessage.value = 'Неверный ответ'
+
+    }
+
+  }
+
+  // ---------- НЕСКОЛЬКО ОТВЕТОВ ----------
+  else {
+
+    if (selectedAnswers.value.length === 0) {
+      errorMessage.value = 'Выберите хотя бы один ответ'
+      return
+    }
+
+    const sortedUserAnswers = [...selectedAnswers.value].sort()
+    const sortedCorrectAnswers = [...correctAnswers].sort()
+
+    const isCorrect =
+      JSON.stringify(sortedUserAnswers) ===
+      JSON.stringify(sortedCorrectAnswers)
+
+    if (isCorrect) {
+
+      errorMessage.value = ''
+      nextQuestion()
+
+    } else {
+
+      errorMessage.value = 'Неверный ответ'
+
+    }
+
+  }
+
+}
+
+const nextQuestion = () => {
+
+  if (currentQuestionIndex.value < questions.value.length - 1) {
+
+    currentQuestionIndex.value++
+
+    selectedAnswer.value = ''
+    selectedAnswers.value = []
+
+  } else {
+
+    submitTest()
+
+  }
+
+}
+
 </script>
 
 <template>
@@ -68,26 +151,60 @@ const goBack = () => {
       
       <Transition name="fade" mode="out-in">
         <!-- Основной блок с вопросами -->
-        <div v-if="questions.length > 0" class="questions-list" key="questions-content">
-          <div v-for="(question, index) in questions" :key="index" class="question-card">
-            
+        <div
+          v-if="questions.length > 0 && currentQuestion"
+          class="questions-list"
+          key="questions-content"
+        >
+          <div class="question-card">
+
             <h3 class="question-title">
-              Вопрос {{ index + 1 }}: {{ question.question_text }}
+              Вопрос {{ currentQuestionIndex + 1 }}:
+              {{ currentQuestion.question_text }}
             </h3>
 
             <ul class="options-list">
-              <li v-for="(option, oIndex) in question.options" :key="oIndex" class="option-item">
+              <li
+                v-for="(option, oIndex) in currentQuestion.options"
+                :key="oIndex"
+                class="option-item"
+              >
                 <label class="option-label">
-                  <input 
-                    type="radio" 
-                    :name="'question-' + index" 
-                    :value="option" 
-                    class="option-input"
-                  />
-                  <span class="option-text">{{ option }}</span>
+
+                  <!-- Один правильный ответ -->
+              <input
+                v-if="currentQuestion.curr_answer.length === 1"
+                type="radio"
+                :name="'question-' + currentQuestionIndex"
+                :value="option"
+                v-model="selectedAnswer"
+                class="option-input"
+              />
+
+              <!-- Несколько правильных ответов -->
+              <input
+                v-else
+                type="checkbox"
+                :value="option"
+                v-model="selectedAnswers"
+                class="option-input"
+              />
+
+                  <span class="option-text">
+                    {{ option }}
+                  </span>
+
                 </label>
               </li>
             </ul>
+
+            <p v-if="errorMessage" class="error-text">
+              {{ errorMessage }}
+            </p>
+
+            <button class="next-button" @click="checkAnswer">
+              Дальше
+            </button>
 
           </div>
         </div>
@@ -287,4 +404,26 @@ const goBack = () => {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+.next-button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.next-button:hover {
+  opacity: 0.9;
+}
+
+.error-text {
+  color: red;
+  margin-top: 15px;
+  font-weight: 600;
+}
+
 </style>

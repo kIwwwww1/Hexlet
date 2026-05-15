@@ -61,7 +61,7 @@ onMounted(async () => {
       <div class="lesson-info" v-html="lessonData.information"></div>
       
       <div class="lesson-image-wrapper">
-        <img src="@/assets/images/kapi3.png" alt="Иллюстрация к уроку" class="lesson-image" />
+        <img src="@/assets/images/kapi3.png" alt="Иллюстрация к уроку" draggable="false" class="lesson-image" />
       </div>
     </div>
     
