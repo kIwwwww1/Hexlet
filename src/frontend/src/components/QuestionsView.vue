@@ -52,7 +52,7 @@ const fetchBackupQuestions = async (id) => {
 
 const submitTest = () => {
   console.log('Тест завершен')
-  router.push('/winner')
+  router.push('/')
 }
 
 const goBack = () => {
@@ -114,29 +114,43 @@ const checkAnswer = () => {
 
 }
 
+const selectOption = (option) => {
+
+  if (currentQuestion.value.curr_answer.length === 1) {
+    selectedAnswer.value = option
+  }
+
+  else {
+    if (selectedAnswers.value.includes(option)) {
+
+      selectedAnswers.value =
+        selectedAnswers.value.filter(item => item !== option)
+
+    } else {
+      selectedAnswers.value.push(option)
+    }
+  }
+}
+
 const nextQuestion = () => {
 
   if (currentQuestionIndex.value < questions.value.length - 1) {
 
     currentQuestionIndex.value++
-
     selectedAnswer.value = ''
     selectedAnswers.value = []
 
   } else {
-
     submitTest()
-
   }
-
 }
 
 </script>
 
 <template>
-  <div class="page-wrapper">
+  <div class="quiz-page">
 
-    <!-- Анимация появления/исчезновения самого экрана загрузки -->
+    <!-- Прелоадер -->
     <Transition name="page-preload">
       <div v-if="isPageLoading" class="page-preloader">
         <div class="preloader-spinner"></div>
@@ -144,106 +158,80 @@ const nextQuestion = () => {
       </div>
     </Transition>
 
-    <div class="questions-container">
-      <header class="questions-header">
-        <h1>Задание #{{ route.params.id }}</h1>
-      </header>
-      
-      <Transition name="fade" mode="out-in">
-        <!-- Основной блок с вопросами -->
-        <div
-          v-if="questions.length > 0 && currentQuestion"
-          class="questions-list"
-          key="questions-content"
+    <!-- Контент -->
+    <div
+      v-if="questions.length > 0 && currentQuestion"
+      class="quiz-container"
+    >
+
+      <!-- Вопрос -->
+      <div class="question-box">
+        <h2>
+          {{ currentQuestion.question_text }}
+        </h2>
+      </div>
+
+      <!-- Картинка -->
+      <div class="image-wrapper">
+        <img
+          src="@/assets/images/kapi1.png"
+          alt="quiz-image"
+          draggable="false"
+          class="quiz-image"
+        />
+      </div>
+
+      <!-- Ответы -->
+      <div class="answers-grid">
+
+        <button
+          v-for="(option, index) in currentQuestion.options"
+          :key="index"
+          class="main-button answer-button"
+          :class="{
+            active:
+              currentQuestion.curr_answer.length === 1
+                ? selectedAnswer === option
+                : selectedAnswers.includes(option)
+          }"
+          @click="selectOption(option)"
         >
-          <div class="question-card">
-
-            <h3 class="question-title">
-              Вопрос {{ currentQuestionIndex + 1 }}:
-              {{ currentQuestion.question_text }}
-            </h3>
-
-            <ul class="options-list">
-              <li
-                v-for="(option, oIndex) in currentQuestion.options"
-                :key="oIndex"
-                class="option-item"
-              >
-                <label class="option-label">
-
-                  <!-- Один правильный ответ -->
-              <input
-                v-if="currentQuestion.curr_answer.length === 1"
-                type="radio"
-                :name="'question-' + currentQuestionIndex"
-                :value="option"
-                v-model="selectedAnswer"
-                class="option-input"
-              />
-
-              <!-- Несколько правильных ответов -->
-              <input
-                v-else
-                type="checkbox"
-                :value="option"
-                v-model="selectedAnswers"
-                class="option-input"
-              />
-
-                  <span class="option-text">
-                    {{ option }}
-                  </span>
-
-                </label>
-              </li>
-            </ul>
-
-            <p v-if="errorMessage" class="error-text">
-              {{ errorMessage }}
-            </p>
-
-            <button class="next-button" @click="checkAnswer">
-              Дальше
-            </button>
-
-          </div>
-        </div>
-        
-        <div v-else class="loading-state" key="loading-skeleton">
-          <div class="skeleton-card" v-for="i in 3" :key="i">
-            <div class="skeleton-line title"></div>
-            <div class="skeleton-line option"></div>
-            <div class="skeleton-line option"></div>
-            <div class="skeleton-line option"></div>
-          </div>
-        </div>
-      </Transition>
-      
-      <div class="button-container left">
-        <button class="main-button">
-          <img src="@/assets/images/question-solid.png" draggable="false" alt="info">
+          {{ option }}
         </button>
-        <button class="main-button skip">
-          <img src="@/assets/images/forward-solid.png" draggable="false" alt="forward">
-        </button>
-      </div>
-      
-      <div class="button-container center">
-        <button @click="router.push('/')" class="main-button home">
-          <img src="@/assets/images/house-solid.png" draggable="false" alt="home">
-        </button>
-        
-        <button @click="goBack" class="main-button go-tests">
-          <img src="@/assets/images/angle-right-solid.png" draggable="false" alt="back">
-        </button>
+
       </div>
 
-      <div class="button-container right">
-        <div class="status-item">
-          <button class="main-button skip" @click="goToGithub">
-            <img src="@/assets/images/user-solid.png" draggable="false" alt="user">
-          </button>
-        </div>
+      <p v-if="errorMessage" class="error-text">
+        {{ errorMessage }}
+      </p>
+
+      <button class="main-button next-question" @click="checkAnswer">
+        <img src="@/assets/images/angle-right-solid.png" draggable="false" alt="info">
+      </button>
+
+    </div>
+
+    <!-- Левый нижний угол -->
+    <div class="button-container left">
+      <button @click="handleAddEnergyClick" :disabled="isProcessing" class="main-button">
+        <img src="@/assets/images/question-solid.png" draggable="false" alt="info">
+      </button>
+      <button class="main-button skip">
+        <img src="@/assets/images/forward-solid.png" draggable="false" alt="add">
+      </button>
+    </div>
+
+    <div class="button-container center">
+      <button @click="router.push('/')" class="main-button home">
+        <img src="@/assets/images/house-solid.png" draggable="false" alt="settings">
+      </button>
+    </div>
+
+    <div class="button-container right">
+      <div class="status-item">
+        <button class="main-button skip" @click="goToGithub">
+          <img src="@/assets/images/user-solid.png" draggable="false" alt="add">
+        </button>
       </div>
     </div>
 
@@ -253,75 +241,106 @@ const nextQuestion = () => {
 
 <style scoped>
 
-.main-button img {
-  width: 24px;
-  height: 24px;
-  display: block;
-  object-fit: contain;
-  color: transparent;
-  font-size: 0;
-}
-
-.questions-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.questions-header {
+.quiz-page {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  padding: 40px;
+  font-family: sans-serif;
+  /* background-color: #F0FDF4; */
 }
 
-.question-card {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+.quiz-container {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ВОПРОС */
+
+.question-box {
+  width: 100%;
+  background: #FFFBEC;
+  padding: 25px 35px;
+  border-radius: 20px;
+  box-shadow: 0 4px 0 #D9C5B2;
+  margin-bottom: 30px;
+  margin-top: -300px;
+  border: 3px solid #D9C5B2;
+}
+
+.question-box h2 {
+  font-size: 32px;
+  line-height: 1.4;
+  color: #2d2d2d;
+  margin: 0;
+  text-align: center;
+}
+
+/* КАРТИНКА */
+
+.image-wrapper {
   margin-bottom: 20px;
 }
 
-.question-title {
-  margin-top: 0;
-  color: #333;
+.quiz-image {
+  width: 400px;
+  user-select: none;
 }
 
-.options-list {
-  list-style: none;
-  padding: 0;
+/* ОТВЕТЫ */
+
+.answers-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
 }
 
-.option-item {
-  margin: 10px 0;
-}
-
-.option-label {
-  display: flex;
-  align-items: center;
+/* .answer-button {
+  height: 90px;
+  border: none;
+  border-radius: 18px;
+  background: #f4ecdf;
+  box-shadow: 0 5px 0 #c9b8a3;
+  font-size: 28px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+  color: #1f1f1f;
 }
 
-.option-input {
-  margin-right: 10px;
+.answer-button:hover {
+  transform: translateY(-4px);
 }
 
-/* Отражение иконки стрелочки влево */
-.main-button.go-tests :deep(img),
-.main-button.go-tests img {
-    transform: scaleX(-1) !important;
+.answer-button:active {
+  transform: translateY(2px);
 }
 
-/* --- ПОЛНОЭКРАННЫЙ ПРЕЛОАДЕР НА ПОЛСЕКУНДЫ --- */
+.answer-button.active {
+  background: #d9c3a3;
+  transform: scale(0.97);
+} */
+
+
+/* ОШИБКА */
+.error-text {
+  margin-top: 20px;
+  color: #d11a2986;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* PRELOADER */
 .page-preloader {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #ffffff; /* Цвет фона под тему вашего приложения */
-  z-index: 9999;
+  inset: 0;
+  background: white;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -329,101 +348,31 @@ const nextQuestion = () => {
 }
 
 .preloader-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #4f46e5; /* Индиго/Синий акцент */
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  border: 4px solid #eee;
+  border-top: 4px solid #4f46e5;
+  animation: spin 0.7s linear infinite;
 }
 
 .preloader-text {
-  margin-top: 15px;
-  font-family: sans-serif;
+  margin-top: 20px;
   color: #4f46e5;
-  font-weight: 500;
+  font-size: 18px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
 }
 
-/* Анимация исчезновения прелоадера */
-.page-preload-leave-active {
-  transition: opacity 0.3s ease;
-}
-.page-preload-leave-to {
-  opacity: 0;
-}
-
-/* --- АНИМАЦИЯ ПЕРЕХОДА ДЛЯ ВОПРОСОВ --- */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* --- СТИЛИ ДЛЯ СКЕЛЕТОНА ЗАГРУЗКИ --- */
-.loading-state {
-  display: flex;
-  flex-direction: column;
-}
-
-.skeleton-card {
-  background: #f1f1f1;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.skeleton-line {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading-shimmer 1.5s infinite;
-  border-radius: 4px;
-}
-
-.skeleton-line.title {
-  height: 24px;
-  width: 70%;
-  margin-bottom: 20px;
-}
-
-.skeleton-line.option {
-  height: 16px;
-  width: 40%;
-  margin: 12px 0;
-}
-
-@keyframes loading-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.next-button {
-  margin-top: 20px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background: #4f46e5;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.next-button:hover {
-  opacity: 0.9;
-}
-
-.error-text {
-  color: red;
-  margin-top: 15px;
-  font-weight: 600;
-}
 
 </style>

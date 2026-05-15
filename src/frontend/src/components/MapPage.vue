@@ -144,7 +144,6 @@ onMounted(async () => {
 
     <!-- Левый нижний угол -->
     <div class="button-container left">
-      <!-- Вешаем вызов новой функции handleAddEnergyClick -->
       <button @click="handleAddEnergyClick" :disabled="isProcessing" class="main-button">
         <img src="@/assets/images/question-solid.png" draggable="false" alt="info">
       </button>
