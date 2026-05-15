@@ -102,20 +102,40 @@
 
 /* СТАТУСЫ УРОВНЕЙ */
 .level-node.passed { 
-  background-color: #86EFAC; 
-  box-shadow: 0 6px 0 #22C55E; 
+    background-color: #BFDBFE; 
+    box-shadow: 0 6px 0 #3B82F6; 
+    opacity: 0.4;
+    transition: ease 0.3s;
 }
 .level-node.passed:active { 
-  box-shadow: 0 2px 0 #22C55E; 
+  box-shadow: 0 2px 0 #22C55E;
+}
+
+.level-node.passed:hover { 
+  opacity: 1;
 }
 
 .level-node.current { 
-  background-color: #4ADE80; 
-  box-shadow: 0 6px 0 #16A34A; 
+  /* background-color: #4ADE80;  */
+  /* box-shadow: 0 6px 0 #16A34A;  */
+  background-color: #BFDBFE; 
+  box-shadow: 0 6px 0 #3B82F6; 
+  /* animation: gentle-glow 2s infinite ease-in-out; */
+
 }
 .level-node.current:active { 
   box-shadow: 0 2px 0 #16A34A; 
 }
+
+/* @keyframes gentle-glow {
+  0%, 100% {
+    box-shadow: 0 6px 0 #3B82F6, 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 6px 0 #3B82F6, 0 0 15px rgba(59, 130, 246, 0.6);
+  }
+} */
+
 
 .level-node.locked { 
   background-color: #4ADE80; 
