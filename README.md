@@ -43,7 +43,7 @@ ALGORITHM=HS256
 
 1. Клонируйте репозиторий и перейдите в него:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/kIwwwww1/Hexlet
    cd Hexlet
    ```
 2. Создайте файл конфигурации:
@@ -76,7 +76,7 @@ ALGORITHM=HS256
 
 1. Клонируйте репозиторий и перейдите в него:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/kIwwwww1/Hexlet
    cd Hexlet
    ```
 2. Создайте файл конфигурации:
