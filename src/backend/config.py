@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Config(BaseSettings):
-    db_url: str = 'sqlite:///database.db'
+    db_url: str = 'postgresql+asyncpg://user:password@db:5432/hexlet'
     SECRET_KEY: str
     ALGORITHM: str = 'HS256'
 
