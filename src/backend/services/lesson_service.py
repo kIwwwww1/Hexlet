@@ -16,21 +16,30 @@ class LessonService:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def create_new_lesson(self, lession_data: LessonData) -> LessonData:
+    async def create_new_lesson(self, lesson_data: LessonData) -> LessonData | None:
         """Create NEW lesson in DB"""
 
         try:
-            data = lession_data.model_dump()
+            data = lesson_data.model_dump()
             questions_data = data.pop('questions', [])
             questions_obj = [Tests(**q) for q in questions_data]
 
-            new_lession = Lessons(**data, questions=questions_obj)
+            new_lesson = Lessons(**data, questions=questions_obj)
 
-            self.session.add(new_lession)
-            await self.session.commit()
-            await self.session.refresh(new_lession)
+            if (
+                await self.session.execute(
+                    select(Lessons).where(Lessons.title == new_lesson.title)
+                )
+            ).scalar_one_or_none():
+                log.debug('Урок уже существует')
+                return None
+            else:
+                self.session.add(new_lesson)
 
-            return lession_data
+                await self.session.commit()
+                await self.session.refresh(new_lesson)
+                log.info('Урок добавлен')
+            return lesson_data
 
         except SQLAlchemyError:
             await self.session.rollback()

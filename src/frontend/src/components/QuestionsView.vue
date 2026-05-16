@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { goToGithub } from '@/navigator'
+import { addFloorLevel } from '@/func'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,10 +51,19 @@ const fetchBackupQuestions = async (id) => {
   }
 }
 
-const submitTest = () => {
-  console.log('Тест завершен')
-  router.push('/')
+const submitTest = async () => {
+  try {
+    console.log('Тест завершен')
+
+    const currentFloor = await addFloorLevel() 
+    console.log('Полученный уровень:', currentFloor)
+    
+    router.push('/') 
+  } catch (error) {
+    console.error('Не удалось обновить уровень:', error)
+  }
 }
+
 
 const goBack = () => {
   router.go(-1)
@@ -84,7 +94,6 @@ const checkAnswer = () => {
 
   }
 
-  // ---------- НЕСКОЛЬКО ОТВЕТОВ ----------
   else {
 
     if (selectedAnswers.value.length === 0) {
@@ -107,11 +116,8 @@ const checkAnswer = () => {
     } else {
 
       errorMessage.value = 'Неверный ответ'
-
     }
-
   }
-
 }
 
 const selectOption = (option) => {
@@ -127,7 +133,7 @@ const selectOption = (option) => {
         selectedAnswers.value.filter(item => item !== option)
 
     } else {
-      selectedAnswers.value.push(option)
+      selectedAnswers.value = [...selectedAnswers.value, option]
     }
   }
 }
@@ -372,6 +378,11 @@ const nextQuestion = () => {
     transform: rotate(360deg);
   }
 
+}
+
+.next-question {
+  margin-top: 30px;
+  align-self: center;
 }
 
 

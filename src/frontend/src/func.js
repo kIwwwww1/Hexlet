@@ -49,3 +49,31 @@ export const addUserEnergy = async () => {
     throw error 
   }
 }
+
+
+// Повышение уровня на этаже
+export const addFloorLevel = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/v1/users/add-floor-level', {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      const data = await response.text()
+      console.log('уровень этажа успешно повышен (ответ сервера):', data)
+
+      return Number(data)
+      
+    } else {
+      console.error('Ошибка сервера при добавлении уровня:', response.status)
+      throw new Error(`Ошибка сервера: ${response.status}`)
+    }
+  } catch (error) {
+    console.error('Сетевая ошибка при запросе add-floor-level:', error)
+    throw error 
+  }
+}

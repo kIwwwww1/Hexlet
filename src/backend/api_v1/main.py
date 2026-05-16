@@ -5,15 +5,27 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.backend.api_v1.lesson_api_v1 import get_lesson_service
 from src.backend.logger_config import log
+from src.backend.models.base import async_session_factory
+from src.backend.services.test_data import TestData
 
 from .lesson_api_v1 import lesson_router
 from .user_api_v1 import user_router
 
 
 @asynccontextmanager
+async def get_test_data_ctx():
+    async with async_session_factory() as session:
+        lesson_service = get_lesson_service(session)
+        yield TestData(session, lesson_service)
+
+
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     log.info('[X] Запуск приложения [X]')
+    async with get_test_data_ctx() as test_session:
+        await test_session.create_lesson_testdata()
     yield
     log.info('[X] Выключение приложения [X]')
 

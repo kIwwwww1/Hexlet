@@ -56,3 +56,7 @@ class UserService:
     async def add_energy(self, request: Request):
         user_data = self.deserialize_userdata(request)
         return await self.db.add_energy_db(int(user_data.get('db_id', 0)))
+
+    async def add_floor_level(self, request: Request):
+        user_data = self.deserialize_userdata(request)
+        return await self.db.add_floor_level_db(int(user_data.get('db_id', 0)))

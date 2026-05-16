@@ -112,3 +112,11 @@ class UserRepository:
         user.energy += 1
         await self.session.commit()
         return user.energy
+
+    async def add_floor_level_db(self, user_id: int):
+        """add user floor level (+1)"""
+
+        user = await self.get_by_id(user_id)
+        user.floor_level += 1
+        await self.session.commit()
+        return user.floor_level

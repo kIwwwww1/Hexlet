@@ -56,3 +56,10 @@ async def add_user_energy(user_service: UserDep, request: Request):
     """Add user energy, return current energy"""
 
     return await user_service.add_energy(request)
+
+
+@user_router.patch('/add-floor-level')
+async def add_user_floor_level(user_service: UserDep, request: Request):
+    """Add user floor lever, return new user floor lever"""
+
+    return await user_service.add_floor_level(request)

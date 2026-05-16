@@ -147,7 +147,7 @@ onMounted(async () => {
       <button @click="handleAddEnergyClick" :disabled="isProcessing" class="main-button">
         <img src="@/assets/images/question-solid.png" draggable="false" alt="info">
       </button>
-      <button class="main-button skip">
+      <button @click="router.push('/winner')" class="main-button skip">
         <img src="@/assets/images/forward-solid.png" draggable="false" alt="add">
       </button>
     </div>
