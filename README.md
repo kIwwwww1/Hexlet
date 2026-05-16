@@ -43,7 +43,7 @@ ALGORITHM=HS256
 
 1. Клонируйте репозиторий и перейдите в него:
    ```bash
-   git clone https://github.com/kIwwwww1/Hexlet
+   git clone https://github.com
    cd Hexlet
    ```
 2. Создайте файл конфигурации:
@@ -60,16 +60,10 @@ ALGORITHM=HS256
    docker compose up db -d
    ```
    *(Подождите 3–5 секунд для полной инициализации СУБД)*
-<<<<<<< HEAD
 5. **Создание структуры таблиц для чистого проекта:**
    Выполните эту команду, чтобы синхронизировать историю Alembic, сгенерировать файлы и применить их к пустой базе данных:
    ```bash
    docker compose run --rm app sh -c "python -m alembic stamp head && python -m alembic revision --autogenerate -m 'init_tables' && python -m alembic upgrade head"
-=======
-5. Примените существующие миграции Alembic для создания таблиц:
-   ```bash
-   docker compose run --rm app python -m alembic upgrade head
->>>>>>> f75d935fc95b996721d261d7076874cfa7873406
    ```
 6. Запустите все остальные сервисы проекта (бэкенд и фронтенд):
    ```bash
@@ -82,7 +76,7 @@ ALGORITHM=HS256
 
 1. Клонируйте репозиторий и перейдите в него:
    ```bash
-   git clone https://github.com/kIwwwww1/Hexlet
+   git clone https://github.com
    cd Hexlet
    ```
 2. Создайте файл конфигурации:
@@ -100,6 +94,8 @@ ALGORITHM=HS256
    ```
 5. Примените миграции базы данных Alembic:
    ```bash
+   uv run alembic stamp head
+   uv run alembic revision --autogenerate -m "init_tables"
    uv run alembic upgrade head
    ```
 6. Запустите backend-сервер:
@@ -113,6 +109,6 @@ ALGORITHM=HS256
 
 * `src/` — исходный код серверной и клиентской части приложения.
 * `alembic/` & `alembic.ini` — конфигурация и файлы миграций базы данных.
-* `pyproject.toml` & `uv.lock` — configuration проекта и зафиксированные версии зависимостей.
+* `pyproject.toml` & `uv.lock` — конфигурация проекта и зафиксированные версии зависимостей.
 * `docker-compose.yml` — конфигурация для одновременного развертывания приложения и СУБД PostgreSQL в Docker.
 * `*.jpg` — скриншоты основных интерфейсов приложения.
