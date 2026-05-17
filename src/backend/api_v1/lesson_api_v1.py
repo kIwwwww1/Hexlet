@@ -24,12 +24,14 @@ LessonDep = Annotated[LessonService, Depends(get_lesson_service)]
 async def create_lesson(
     lesson_data: LessonData, lesson_service: LessonDep, session: SessionDep
 ):
+    """Create full lesson data"""
     new_lesson = await lesson_service.create_new_lesson(lesson_data)
     return new_lesson
 
 
 @lesson_router.get('/{id:int}', response_model=LessonData)
 async def get_current_lesson(id: int, lesson_service: LessonDep, session: SessionDep):
+    """Get full lesson data"""
     lesson_obj = await lesson_service.get_lesson_id(id)
 
     return lesson_obj
